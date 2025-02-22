@@ -1,84 +1,49 @@
-# Turborepo starter
+# Beej
 
-This Turborepo starter is maintained by the Turborepo core team.
+Package to scaffold starter templates for web frontend application with [next.js](https://nextjs.org/) or [react](https://react.dev/) along with pre configured components, helpers and other functionalities for starting new project quickly.
 
-## Using this example
+> [!Warning]
+>
+> The package is still in very early stage
 
-Run the following command:
+## Scaffold a project
 
-```sh
-npx create-turbo@latest
+> [!Warning]
+>
+> Required [Node.js](https://nodejs.org/en/) version 18+
+
+**With npm:**
+
+```bash
+npx @thanka-digital/beej@latest
 ```
 
-## What's inside?
+**With pnpm:**
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+pnpx @thanka-digital/beej@latest
 ```
 
-### Develop
+Now follow the prompts.
 
-To develop all apps and packages, run the following command:
+## Features
 
-```
-cd my-turborepo
-pnpm dev
-```
+- [ ] Pre configured global components such as input, button (using tailwind/chakra/mantine)
+- [ ] Proper API integration helper functions (using fetch/rtk/tanstack)
+- [ ] Proper validation and error handling (using zod/react-form)
+- [ ] Routing configuration (using react-router-dom for react)
+- [ ] State management (using context/redux/jotai/zustand)
+- [ ] Useful custom hooks such as usePortals, useWindowResize, and more
+- [ ] Extensible design system implementation (tailwind config, mantine theme, chakra theme)
+- [ ] Testing templates (using jest/testing-library/playwright)
+- [ ] Accessibility focused (night watcher/axe dev tools)
+- [ ] SEO optimized
+- [ ] Fully customizable to fit the need
 
-### Remote Caching
+> [!Note]
+>
+> As stated earlier the package is still in the early stage and there are many features still being worked on. In the meantime you can check the [npm published package](https://www.npmjs.com/package/@thanka-digital/beej) and provide us with feedback or issues.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## Contribution
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Follow our [contribution guide](CONTRIBUTION.md) and start contributing in various ways.
