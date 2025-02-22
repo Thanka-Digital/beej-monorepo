@@ -1,0 +1,60 @@
+{
+  "name": "@beej/react",
+  "version": "0.0.6",
+  "description": "Starter template for web frontend projects with React, Next.js, TailwindCSS, ChakraUI, Mantine, Redux, Jotai, and many other foundational libraries already configured.",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "unbuild --stub && set NODE_ENV=development && node index.js",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "index.js",
+  "files": [
+    "dist",
+    "templates",
+    "index.js"
+  ],
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  },
+  "bin": {
+    "beej": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thanka-Digital/beej.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Thanka-Digital/beej/issues"
+  },
+  "homepage": "https://github.com/Thanka-Digital/beej#readme",
+  "keywords": [
+    "starter",
+    "template",
+    "tailwind",
+    "chakra",
+    "mantine",
+    "redux",
+    "jotai",
+    "ui",
+    "react",
+    "next"
+  ],
+  "author": "alsongarbuja",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^22.8.1",
+    "@types/prompts": "^2.4.9",
+    "minimist": "^1.2.8",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2",
+    "typescript": "^5.6.3",
+    "unbuild": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
