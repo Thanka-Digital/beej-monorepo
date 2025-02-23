@@ -307,8 +307,6 @@ export const main = async () => {
   const templateStateVariant = state || argState;
   const templateApiVariant = api || argApi;
 
-  const templateVariant = `${templateComponentVariant}-${templateStateVariant}-${templateApiVariant}`;
-
   const root = path.join(cwd, targetDir);
 
   if (overwrite === 'yes') {
@@ -321,21 +319,25 @@ export const main = async () => {
     file,
     templateDir,
     content,
-    filesToCopy,
-    foldersToCopy,
+    filesToIgnore,
+    foldersToIgnore,
+    targetFolder,
   }: {
-    file: string, templateDir?: string, content?: string;
-    filesToCopy?: string[];
-    foldersToCopy?: string[];
+    file: string,
+    templateDir?: string,
+    content?: string;
+    filesToIgnore?: string[];
+    foldersToIgnore?: string[];
+    targetFolder?: string;
   }) => {
-    const targetPath = path.join(root, renameFiles[file] ?? file);
+    const targetPath = path.join(root, targetFolder ?? "", renameFiles[file] ?? file);
     if (content) {
       fs.writeFileSync(targetPath, content);
     } else {
       if (!templateDir) {
         throw new Error("Need to pass templateDir");
       }
-      copy(path.join(templateDir, file), targetPath, file, filesToCopy, foldersToCopy);
+      copy(path.join(templateDir, file), targetPath, file, filesToIgnore, foldersToIgnore);
     }
   }
 
@@ -346,36 +348,28 @@ export const main = async () => {
 
   // Scaffold the common folder files which contains all the necessary files needed in every setup
   console.log(`\n${blueBright(' Scaffolding common files')}`)
-  const commonDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../libraries/common" : "../../libraries/common"}`);
+  const commonDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../main" : "../../main"}`);
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter((f) => f !== 'package.json' && f !== 'node_modules')) {
-    write({ file, templateDir: commonDir });
+    write({ file, templateDir: commonDir, filesToIgnore: ["AppRoute.test.tsx", "routes.test.tsx"], foldersToIgnore: ["test", "libraries"] });
   }
 
   // Scaffold the files according to the component library selected
   console.log(`\n${blueBright(` Scaffolding ${templateComponentVariant} files`)}`)
 
-  const componentDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../libraries/" : "../../libraries/"}${templateComponentVariant}`);
+  const componentDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateComponentVariant}`);
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
-  const foldersToTraverse = [
-    "src",
-    "components",
-    "provider",
-    "theme",
-    "types",
-    "utils",
-  ];
-  const filesToScaffold = ['postcss.config.mjs'];
   for (const file of filesToCopyFromComponentDir.filter((f) => f !== 'package.json' && f !== 'node_modules')) {
-    write({ file, templateDir: componentDir, filesToCopy: filesToScaffold, foldersToCopy: foldersToTraverse });
+    // const stat = fs.statSync(file)
+    // if (stat.isDirectory()) {
+    //  TODO: add target folder src only if folder
+    write({ file, templateDir: componentDir, targetFolder: "src" });
+    // } else {
+    //   write({ file, templateDir: componentDir });
+    // }
   }
 
-  // const templateDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../libraries/" : "../../libraries/"}${templateRootLibrary}`, templateVariant);
-  // const filesToCopy = fs.readdirSync(templateDir);
-  // for (const file of filesToCopy.filter((f) => f !== 'package.json')) {
-  //   write(file);
-  // }
-
+  // TODO: add package dependencies as per the user options
   const pkg = JSON.parse(fs.readFileSync(path.join(commonDir, 'package.json'), 'utf-8'));
   pkg.name = packageName || getProjectName();
 
@@ -448,25 +442,25 @@ function pkgInfoFromUserAgent(userAgent: string | undefined) {
   };
 }
 
-function copy(src: string, dest: string, fileDirName: string, filesToCopy?: string[], foldersToCopy?: string[]) {
+function copy(src: string, dest: string, fileDirName: string, filesToIgnore?: string[], foldersToIgnore?: string[]) {
   const stat = fs.statSync(src)
   if (stat.isDirectory()) {
-    if (foldersToCopy) {
-      if (foldersToCopy.includes(fileDirName)) {
-        copyDir(src, dest, src.split(path.sep).pop() || fileDirName)
-      } else {
+    if (foldersToIgnore) {
+      if (foldersToIgnore.includes(fileDirName)) {
         console.log(`  ${red('Ignoring')} ${fileDirName}`)
+      } else {
+        copyDir(src, dest, src.split(path.sep).pop() || fileDirName)
       }
     } else {
       copyDir(src, dest, src.split(path.sep).pop() || fileDirName)
     }
   } else {
-    if (filesToCopy) {
-      if (filesToCopy.includes(fileDirName)) {
+    if (filesToIgnore) {
+      if (filesToIgnore.includes(fileDirName)) {
+        console.log(`  ${red('Ignoring')} ${fileDirName}`)
+      } else {
         console.log(`  ${cyanBright('Creating')} ${fileDirName}`);
         fs.copyFileSync(src, dest)
-      } else {
-        console.log(`  ${red('Ignoring')} ${fileDirName}`)
       }
     } else {
       console.log(`  ${cyanBright('Creating')} ${fileDirName}`);
