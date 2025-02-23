@@ -1,29 +1,28 @@
 ---
 slug: welcome
 title: Welcome
-authors: [slorber, yangshun]
-tags: [facebook, hello, docusaurus]
+authors: [alson]
+tags: [beej]
 ---
 
-[Docusaurus blogging features](https://docusaurus.io/docs/blog) are powered by the [blog plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog).
+Beej is a frontend web starter template package built to get started with building new project as quickly as possible.
 
-Here are a few tips you might find useful.
+Some feature consist of pre configured components using different UI libraries like ([Chakra](https://chakra-ui.com), [Mantine](https://mantine.dev)), State management configured with [Redux toolkit](https://redux-toolkit.js.org/), [Jotai](https://jotai.org/), [zustand](https://zustand-demo.pmnd.rs/), and much more.
 
 <!-- truncate -->
 
-Simply add Markdown files (or folders) to the `blog` directory.
+:::warning
 
-Regular blog authors can be added to `authors.yml`.
+The project is in early development
 
-The blog post date can be extracted from filenames, such as:
+:::
 
-- `2019-05-30-welcome.md`
-- `2019-05-30-welcome/index.md`
+At [Thanka Digital](https://thankadigital.com) we are constantly developing new things either for clients or for ourselves. As so we have to scaffold project many many times.
 
-A blog post folder can be convenient to co-locate blog post images:
+There are great tools like `vite`, `babel` to make the process of scaffolding new project quite easy. But being framework and library agnostic these tools will only generate limited and bare minimum project structure.
 
-![Docusaurus Plushie](./docusaurus-plushie-banner.jpeg)
+Although there are many template git repositories and they are awesome, we always wanted to create our own design system and build our inhouse products with the system as the backbone.
 
-The blog supports tags as well!
+Hence we decided to create **Beej**, a frontend web project starter that will create all the folders and files which are necessary to get started with building a product. From components to state management, routing to Api handing, with a simple command and few options to select beej will handle all the scaffolding process for you.
 
-**And if you don't want a blog**: just delete this directory, and use `blog: false` in your Docusaurus config.
+We are currently building the custom `tailwindcss components` and a `cli` and integrating greate libraries and packages to the project.
