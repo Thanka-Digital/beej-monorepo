@@ -350,7 +350,7 @@ export const main = async () => {
   console.log(`\n${blueBright(' Scaffolding common files')}`)
   const commonDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../main" : "../../main"}`);
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
-  for (const file of filesToCopyFromCommon.filter((f) => f !== '_package.json')) {
+  for (const file of filesToCopyFromCommon.filter((f) => f !== 'package.json')) {
     write({ file, templateDir: commonDir, filesToIgnore: ["AppRoute.test.tsx", "routes.test.tsx"], foldersToIgnore: ["test", "libraries"] });
   }
 
@@ -359,7 +359,7 @@ export const main = async () => {
 
   const componentDir = path.resolve(fileURLToPath(import.meta.url), `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateComponentVariant}`);
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
-  for (const file of filesToCopyFromComponentDir.filter((f) => f !== '_package.json')) {
+  for (const file of filesToCopyFromComponentDir.filter((f) => f !== 'package.json')) {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
     //  TODO: add target folder src only if folder
@@ -370,7 +370,7 @@ export const main = async () => {
   }
 
   // TODO: add package dependencies as per the user options
-  const pkg = JSON.parse(fs.readFileSync(path.join(commonDir, '_package.json'), 'utf-8'));
+  const pkg = JSON.parse(fs.readFileSync(path.join(commonDir, 'package.json'), 'utf-8'));
   pkg.name = packageName || getProjectName();
 
   write({ file: 'package.json', content: JSON.stringify(pkg, null, 2) + '\n' });
