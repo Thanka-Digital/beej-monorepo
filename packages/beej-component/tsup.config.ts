@@ -11,6 +11,7 @@ export default defineConfig({
     input: 'src/components/custom/custom-input.tsx',
     select: 'src/components/custom/custom-select.tsx',
     textarea: 'src/components/custom/custom-textarea.tsx',
+    cn: 'src/utils/cn.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,
