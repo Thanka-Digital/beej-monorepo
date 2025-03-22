@@ -1,6 +1,6 @@
 # Beej
 
-Package to scaffold starter templates for web frontend application with [next.js](https://nextjs.org/) or [react](https://react.dev/) along with pre configured components, helpers and other functionalities for starting new project quickly.
+A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.
 
 > [!Warning]
 >
@@ -42,7 +42,7 @@ Now follow the prompts.
 
 > [!Note]
 >
-> As stated earlier the package is still in the early stage and there are many features still being worked on. In the meantime you can check the [npm published package](https://www.npmjs.com/package/@thanka-digital/beej) and provide us with feedback or issues.
+> As stated earlier the package is still in the early stage and there are many features still being worked on. In the meantime you can check the [npm published package](https://www.npmjs.com/package/@thanka-digital/beej-react) and provide us with feedback or issues.
 
 ## Contribution
 
