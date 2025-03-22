@@ -25,17 +25,20 @@ jobs:
   changeset:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
 
     steps:
-      - name: Debug Labels
-        run: echo "${{ toJson(github.event.pull_request.labels) }}"
       - name: Checkout in the repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Changeset Action
+        uses: generates/changeset-action@v3.0.0
+      - name: Commit Changes
+        uses: generates/commit-action@v1.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
