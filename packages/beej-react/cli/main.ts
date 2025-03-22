@@ -77,16 +77,16 @@ const states: StateVariant[] = [
     displayName: "Context API",
     color: cyanBright,
   },
-  {
-    name: "redux",
-    displayName: "Redux",
-    color: greenBright,
-  },
-  {
-    name: "jotai",
-    displayName: "Jotai",
-    color: yellowBright,
-  }
+  // {
+  //   name: "redux",
+  //   displayName: "Redux",
+  //   color: greenBright,
+  // },
+  // {
+  //   name: "jotai",
+  //   displayName: "Jotai",
+  //   color: yellowBright,
+  // }
 ];
 const apis: ApiVariant[] = [
   {
@@ -94,16 +94,16 @@ const apis: ApiVariant[] = [
     displayName: "Fetch",
     color: cyanBright,
   },
-  {
-    name: "rtk",
-    displayName: "Redux Toolkit",
-    color: greenBright,
-  },
-  {
-    name: "tanstack",
-    displayName: "Tanstack",
-    color: yellowBright,
-  },
+  // {
+  //   name: "rtk",
+  //   displayName: "Redux Toolkit",
+  //   color: greenBright,
+  // },
+  // {
+  //   name: "tanstack",
+  //   displayName: "Tanstack",
+  //   color: yellowBright,
+  // },
 ];
 
 // Agruments parsed with minimist
