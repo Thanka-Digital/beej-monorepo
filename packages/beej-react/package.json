@@ -1,7 +1,7 @@
 {
-  "name": "@beej/react",
+  "name": "@thanka-digital/beej-react",
   "version": "0.0.7",
-  "description": "Starter template for web frontend projects with React, Next.js, TailwindCSS, ChakraUI, Mantine, Redux, Jotai, and many other foundational libraries already configured.",
+  "description": "A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.",
   "type": "module",
   "scripts": {
     "test": "unbuild --stub && set NODE_ENV=development && node index.js",
