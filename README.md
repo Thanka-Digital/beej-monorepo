@@ -15,13 +15,13 @@ Package to scaffold starter templates for web frontend application with [next.js
 **With npm:**
 
 ```bash
-npx @thanka-digital/beej@latest
+npx @thanka-digital/beej-react@latest
 ```
 
 **With pnpm:**
 
 ```bash
-pnpx @thanka-digital/beej@latest
+pnpx @thanka-digital/beej-react@latest
 ```
 
 Now follow the prompts.
