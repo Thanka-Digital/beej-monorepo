@@ -10,7 +10,7 @@ on:
         description: |
           The SemVer type <major|minor|patch> to use manually by
           overriding the label type
-        required: false
+        required: true
       name:
         description: |
           The package name to use when running manually. If not specified, it will
@@ -24,7 +24,7 @@ on:
 jobs:
   changeset:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: read
       pull-requests: read
@@ -36,8 +36,23 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      # - name: Setup pnpm
+      #   uses: pnpm/action-setup@v4
+      # - name: Setup node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      #     cache: "pnpm"
+      # - name: Install dependencies
+      #   run: pnpm install
+      - name: Extract Label
+        id: extract_label
+        run: echo "LABEL_TYPE=$(jq -r '.pull_request.labels[].name | select(startswith("changeset:"))' $GITHUB_EVENT_PATH | cut -d':' -f2)" >> $GITHUB_ENV
+
       - name: Changeset Action
         uses: generates/changeset-action@v3.0.0
+        with:
+          type: ${{ env.LABEL_TYPE }}
       - name: Commit Changes
         uses: generates/commit-action@v1.0.2
         with:
