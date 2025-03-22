@@ -56,4 +56,4 @@ jobs:
       - name: Commit Changes
         uses: generates/commit-action@v1.0.2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
