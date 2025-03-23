@@ -1,4 +1,4 @@
-import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react"
+import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
 const customConfig = defineConfig({
   theme: {
@@ -29,8 +29,8 @@ const customConfig = defineConfig({
           800: { value: "#114240" },
           900: { value: "#032726" },
           950: { value: "#021716" },
-        }
-      }
+        },
+      },
     },
     semanticTokens: {
       colors: {
@@ -88,10 +88,10 @@ const customConfig = defineConfig({
           emphasized: { value: "{colors.yellow.300}" },
           focusRing: { value: "{colors.yellow.500}" },
         },
-      }
-    }
+      },
+    },
   },
-})
+});
 
-const customExtendedSystem = createSystem(defaultConfig, customConfig)
+const customExtendedSystem = createSystem(defaultConfig, customConfig);
 export default customExtendedSystem;

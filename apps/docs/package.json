@@ -15,7 +15,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@beej/ui": "workspace:*",
+    "@thanka-digital/beej-component": "workspace:*",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@mdx-js/react": "^3.0.0",

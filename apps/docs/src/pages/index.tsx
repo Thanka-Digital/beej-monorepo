@@ -6,7 +6,7 @@ import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 // import HomepageFeatures from "@site/src/components/HomepageFeatures";
 
-import { Button, Input } from "@beej/ui";
+import { Button, Input } from "@thanka-digital/beej-component";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();

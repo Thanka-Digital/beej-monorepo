@@ -3,7 +3,7 @@ import { RootState } from "../../app/store";
 
 const initialState = {
   count: 0,
-}
+};
 
 const CounterSlice = createSlice({
   name: "counter",

@@ -175,7 +175,7 @@ const buttonStyles = cva(
       colorscheme: "primary",
       padding: "base",
     },
-  }
+  },
 );
 
 interface IButtonProps {
@@ -213,12 +213,12 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         onClick={onClick}
         className={cn(
-          buttonStyles({ variant, colorscheme, padding, className })
+          buttonStyles({ variant, colorscheme, padding, className }),
         )}
         {...rest}
       >
         {processing ? processingText : children}
       </button>
     );
-  }
+  },
 );

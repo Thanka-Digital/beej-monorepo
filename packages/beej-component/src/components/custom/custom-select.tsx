@@ -23,7 +23,7 @@ const selectStyles = cva(
       padding: "base",
       colorscheme: "gray",
     },
-  }
+  },
 );
 
 interface ISelectProps {
@@ -64,7 +64,7 @@ export default forwardRef<HTMLSelectElement, SelectProps>(
           disabled={disabled}
           aria-disabled={disabled}
           className={cn(
-            selectStyles({ variant, padding, colorscheme, className })
+            selectStyles({ variant, padding, colorscheme, className }),
           )}
           {...rest}
         >
@@ -76,5 +76,5 @@ export default forwardRef<HTMLSelectElement, SelectProps>(
         </select>
       </div>
     );
-  }
+  },
 );
