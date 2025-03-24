@@ -4,6 +4,7 @@ import prompts from "prompts";
 import colors from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
+import { DEPENDENCIES_LIST } from "./utils/pkgDependency";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
@@ -208,8 +209,8 @@ export const main = async () => {
           message:
             typeof argLibrary === "string" && !LIBRARIES.includes(argLibrary)
               ? reset(
-                  `"${argLibrary}" isn't available. Please choose from below: `,
-                )
+                `"${argLibrary}" isn't available. Please choose from below: `,
+              )
               : reset("Select a library:"),
           initial: 0,
           choices: libraries.map((library) => {
@@ -226,10 +227,10 @@ export const main = async () => {
           name: "component",
           message:
             typeof argComponent === "string" &&
-            !COMPONENTS.includes(argComponent)
+              !COMPONENTS.includes(argComponent)
               ? reset(
-                  `"${argComponent}" isn't available. Please choose from below: `,
-                )
+                `"${argComponent}" isn't available. Please choose from below: `,
+              )
               : reset("Select a component style:"),
           initial: 0,
           choices: components.map((component) => {
@@ -246,8 +247,8 @@ export const main = async () => {
           message:
             typeof argState === "string" && !STATES.includes(argState)
               ? reset(
-                  `"${argState}" isn't available. Please choose from below: `,
-                )
+                `"${argState}" isn't available. Please choose from below: `,
+              )
               : reset("Select a state preference:"),
           initial: 0,
           choices: states.map((state) => {
@@ -383,10 +384,7 @@ export const main = async () => {
     // }
   }
 
-  // TODO: add package dependencies as per the user options
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(commonDir, "package.json"), "utf-8"),
-  );
+  const pkg = updatePkgJsonDeps(commonDir, [component])
   pkg.name = packageName || getProjectName();
 
   write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
@@ -415,6 +413,38 @@ export const main = async () => {
 
   console.log();
 };
+
+function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(commonDir, "package.json"), "utf-8")
+  )
+
+  const selectedDependencies = selectedOptions.map((so) => DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST]).flat(1);
+
+  pkg.dependencies = pkg.dependencies || {}
+  Object.keys(pkg.devDependencies).forEach((dep) => {
+    if (selectedDependencies.some((prefix) => dep.startsWith(prefix))) {
+      pkg.dependencies[dep] = pkg.devDependencies[dep];
+    }
+  });
+
+  // TODO: make it more dynamic
+  pkg.devDependencies = {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+
+  return pkg;
+}
 
 function formatTargetDir(targetDir: string | undefined) {
   return targetDir?.trim().replace(/\/+$/g, "");
