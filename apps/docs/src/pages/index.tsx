@@ -12,13 +12,13 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <div>
-      <div className="max-w-7xl mx-auto flex flex-col items-center">
+      <div className="max-w-5xl mx-auto flex flex-col items-center py-12">
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
         <p className="text-center text-xl">{siteConfig.tagline}</p>
         <Button variant="outline" colorscheme="danger">
-          Hello
+          Documentation
         </Button>
         <Input variant="underline" />
       </div>

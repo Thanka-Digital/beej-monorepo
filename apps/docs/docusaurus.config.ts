@@ -7,7 +7,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "Beej",
   tagline:
-    "A frontend web project starter template with all the basic needs such as components, state management, routing and more pre configured",
+    "A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -19,7 +19,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "thanka-digital", // Usually your GitHub org/user name.
-  projectName: "beej", // Usually your repo name.
+  projectName: "beej-monorepo", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
