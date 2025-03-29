@@ -1,0 +1,35 @@
+name: Release the changes of the documentation to github pages
+
+on:
+  push:
+    branches: main
+
+jobs:
+  github-page:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout in the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Docs
+        working-directory: apps/docs
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: apps/docs/build
