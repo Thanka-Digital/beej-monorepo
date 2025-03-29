@@ -35,7 +35,7 @@ export default function Radio(props: IRadioProps) {
           "rounded-md border p-2 disabled:cursor-not-allowed",
           borderColor,
           accentColor,
-          className
+          className,
         )}
         {...rest}
       />

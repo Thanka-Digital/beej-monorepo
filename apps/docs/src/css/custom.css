@@ -4,8 +4,9 @@
  * work well for content-centric websites.
  */
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 
-@theme {
+/* @theme {
   --color-primary: #3490dc;
   --color-secondary: #ffed4a;
   --color-accent: #ff3860;
@@ -14,7 +15,7 @@
   --color-warning: #f6993f;
   --color-info: #6cb2eb;
   --color-neutral: #3d4451;
-}
+} */
 
 /* You can override the default Infima variables here. */
 :root {

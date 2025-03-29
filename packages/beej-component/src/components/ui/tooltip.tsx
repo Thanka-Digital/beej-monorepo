@@ -57,7 +57,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
             className={cn(
               "px-2 py-1 text-xs rounded-md w-max",
               bgColor,
-              textColor
+              textColor,
             )}
             {...getFloatingProps()}
           >

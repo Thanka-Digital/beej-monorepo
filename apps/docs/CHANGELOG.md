@@ -1,5 +1,16 @@
 # @beej/docs
 
+## 0.0.2
+
+### Patch Changes
+
+- 6e52cdf: formatting fixes and package name update
+- a6c88cd: update: docs change
+- 71172c4: Fix: fix tailwind css config for v4 with new @config directive in css
+- Updated dependencies [6e52cdf]
+- Updated dependencies [a6c88cd]
+  - @thanka-digital/beej-component@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes

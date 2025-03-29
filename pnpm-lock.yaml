@@ -23,9 +23,6 @@ importers:
 
   apps/docs:
     dependencies:
-      '@beej/ui':
-        specifier: workspace:*
-        version: link:../../packages/beej-component
       '@docusaurus/core':
         specifier: 3.7.0
         version: 3.7.0(@mdx-js/react@3.1.0(@types/react@19.0.8)(react@19.0.0))(acorn@8.14.0)(eslint@9.20.0(jiti@2.4.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.6.3)
@@ -38,6 +35,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.9
         version: 4.0.9
+      '@thanka-digital/beej-component':
+        specifier: workspace:*
+        version: link:../../packages/beej-component
       clsx:
         specifier: ^2.0.0
         version: 2.1.1

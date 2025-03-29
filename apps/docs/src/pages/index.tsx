@@ -6,21 +6,20 @@ import Layout from "@theme/Layout";
 import Heading from "@theme/Heading";
 // import HomepageFeatures from "@site/src/components/HomepageFeatures";
 
-import { Button, Input } from "@beej/ui";
+import { Button } from "@thanka-digital/beej-component";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <div>
-      <div className="max-w-7xl mx-auto flex flex-col items-center">
+      <div className="max-w-5xl mx-auto flex flex-col items-center py-12">
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
         <p className="text-center text-xl">{siteConfig.tagline}</p>
-        <Button variant="outline" colorscheme="danger">
-          Hello
+        <Button variant="outline" colorscheme="black" className="rounded-md">
+          Documentation
         </Button>
-        <Input variant="underline" />
       </div>
     </div>
   );
