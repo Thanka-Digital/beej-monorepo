@@ -19,7 +19,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "thanka-digital", // Usually your GitHub org/user name.
-  projectName: "beej-monorepo", // Usually your repo name.
+  projectName: "beej", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
