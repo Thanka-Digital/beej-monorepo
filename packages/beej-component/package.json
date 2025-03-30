@@ -1,7 +1,6 @@
 {
   "name": "@thanka-digital/beej-component",
   "version": "0.0.2",
-  "private": true,
   "main": "dist/index.js",
   "exports": {
     ".": {
