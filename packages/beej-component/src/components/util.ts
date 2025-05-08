@@ -25,7 +25,7 @@ export const variantForTextFields = {
 export const colorSchemeForButton = {
   primary: "outline-primary",
   secondary: "outline-secondary",
-  accent: "outline-accent",
+  // accent: "outline-accent",
   success: "outline-success",
   danger: `outline-danger`,
   warning: "outline-warning",
