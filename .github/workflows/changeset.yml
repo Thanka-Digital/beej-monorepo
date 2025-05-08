@@ -1,10 +1,8 @@
-name: Bump version of packages
+name: Create Changeset files
 
 on:
-  # push:
-  #   branches: dev
   pull_request:
-    branches: main
+    branches: dev
     types: [labeled, synchronize]
   workflow_dispatch:
     inputs:
