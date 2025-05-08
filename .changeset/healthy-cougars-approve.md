@@ -1,5 +1,4 @@
 ---
-"beej": patch
 "@beej/docs": patch
 "@thanka-digital/beej-component": patch
 ---
