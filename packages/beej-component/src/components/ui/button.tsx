@@ -22,18 +22,18 @@ const buttonStyles = cva(
       {
         variant: "solid",
         colorscheme: "primary",
-        className: "bg-primary",
+        className: "bg-primary hover:bg-primary-dark text-primary-fg",
       },
       {
         variant: "solid",
         colorscheme: "secondary",
-        className: "bg-secondary",
+        className: "bg-secondary hover:bg-secondary-dark text-secondary-fg",
       },
-      {
-        variant: "solid",
-        colorscheme: "accent",
-        className: "bg-accent",
-      },
+      // {
+      //   variant: "solid",
+      //   colorscheme: "accent",
+      //   className: "bg-accent",
+      // },
       {
         variant: "solid",
         colorscheme: "success",
@@ -57,7 +57,7 @@ const buttonStyles = cva(
       {
         variant: "solid",
         colorscheme: "black",
-        className: "bg-black",
+        className: "bg-black text-white",
       },
       {
         variant: "solid",
@@ -72,18 +72,18 @@ const buttonStyles = cva(
       {
         variant: "outline",
         colorscheme: "primary",
-        className: "text-primary border-primary hover:bg-primary/20",
+        className: "text-primary border-primary hover:bg-primary-subtle",
       },
       {
         variant: "outline",
         colorscheme: "secondary",
-        className: "text-secondary border-secondary hover:bg-secondary/20",
+        className: "text-secondary border-secondary hover:bg-secondary-subtle",
       },
-      {
-        variant: "outline",
-        colorscheme: "accent",
-        className: "text-accent border-accent hover:bg-accent/20",
-      },
+      // {
+      //   variant: "outline",
+      //   colorscheme: "accent",
+      //   className: "text-accent border-accent hover:bg-accent/20",
+      // },
       {
         variant: "outline",
         colorscheme: "success",
@@ -107,7 +107,7 @@ const buttonStyles = cva(
       {
         variant: "outline",
         colorscheme: "black",
-        className: "text-black border-black hover:bg-black/20",
+        className: "text-black border-black hover:bg-black/80",
       },
       {
         variant: "outline",
@@ -122,12 +122,12 @@ const buttonStyles = cva(
       {
         variant: "ghost",
         colorscheme: "primary",
-        className: "text-primary bg-transparent hover:bg-primary/20",
+        className: "text-primary bg-transparent hover:bg-primary-light",
       },
       {
         variant: "ghost",
         colorscheme: "secondary",
-        className: "text-secondary bg-transparent hover:bg-secondary/20",
+        className: "text-secondary bg-transparent hover:bg-secondary-light",
       },
       {
         variant: "ghost",
@@ -144,11 +144,11 @@ const buttonStyles = cva(
         colorscheme: "danger",
         className: "text-danger bg-transparent hover:bg-danger/20",
       },
-      {
-        variant: "ghost",
-        colorscheme: "accent",
-        className: "text-accent bg-transparent hover:bg-accent/20",
-      },
+      // {
+      //   variant: "ghost",
+      //   colorscheme: "accent",
+      //   className: "text-accent bg-transparent hover:bg-accent/20",
+      // },
       {
         variant: "ghost",
         colorscheme: "info",
@@ -175,7 +175,7 @@ const buttonStyles = cva(
       colorscheme: "primary",
       padding: "base",
     },
-  },
+  }
 );
 
 interface IButtonProps {
@@ -213,12 +213,12 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         onClick={onClick}
         className={cn(
-          buttonStyles({ variant, colorscheme, padding, className }),
+          buttonStyles({ variant, colorscheme, padding, className })
         )}
         {...rest}
       >
         {processing ? processingText : children}
       </button>
     );
-  },
+  }
 );
