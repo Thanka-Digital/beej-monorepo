@@ -20,9 +20,9 @@ const textareaStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "gray",
+      colorscheme: "primary",
     },
-  },
+  }
 );
 
 interface ITextareaProps {
@@ -61,11 +61,11 @@ export default forwardRef<HTMLTextAreaElement, TextareaProps>(
           disabled={disabled}
           aria-disabled={disabled}
           className={cn(
-            textareaStyles({ variant, padding, colorscheme, className }),
+            textareaStyles({ variant, padding, colorscheme, className })
           )}
           {...rest}
         />
       </div>
     );
-  },
+  }
 );

@@ -21,9 +21,9 @@ const inputStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "gray",
+      colorscheme: "danger",
     },
-  },
+  }
 );
 
 interface IInputProps {
@@ -64,7 +64,7 @@ export default forwardRef<HTMLInputElement, InputProps>(
               padding,
               colorscheme,
               className,
-            }),
+            })
           )}
           required={required}
           disabled={disabled}
@@ -73,5 +73,5 @@ export default forwardRef<HTMLInputElement, InputProps>(
         />
       </div>
     );
-  },
+  }
 );
