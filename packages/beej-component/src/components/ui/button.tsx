@@ -10,7 +10,7 @@ import {
 
 const buttonStyles = cva(
   [
-    "flex gap-2 items-center outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
+    "flex gap-2 items-center rounded-md outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
   ],
   {
     variants: {
@@ -37,37 +37,27 @@ const buttonStyles = cva(
       {
         variant: "solid",
         colorscheme: "success",
-        className: "bg-success",
+        className: "bg-success text-white",
       },
       {
         variant: "solid",
         colorscheme: "danger",
-        className: "bg-danger",
+        className: "bg-danger text-white",
       },
       {
         variant: "solid",
         colorscheme: "warning",
-        className: "bg-warning",
+        className: "bg-warning text-white",
       },
       {
         variant: "solid",
         colorscheme: "info",
-        className: "bg-info",
+        className: "bg-info text-white",
       },
       {
         variant: "solid",
-        colorscheme: "black",
+        colorscheme: "dark",
         className: "bg-black text-white",
-      },
-      {
-        variant: "solid",
-        colorscheme: "white",
-        className: "bg-white",
-      },
-      {
-        variant: "solid",
-        colorscheme: "gray",
-        className: "bg-gray",
       },
       {
         variant: "outline",
@@ -106,18 +96,8 @@ const buttonStyles = cva(
       },
       {
         variant: "outline",
-        colorscheme: "black",
-        className: "text-black border-black hover:bg-black/80",
-      },
-      {
-        variant: "outline",
-        colorscheme: "white",
-        className: "text-white border-white hover:bg-white/20",
-      },
-      {
-        variant: "outline",
-        colorscheme: "gray",
-        className: "text-gray border-gray hover:bg-gray/20",
+        colorscheme: "dark",
+        className: "text-black border-black hover:bg-black/20",
       },
       {
         variant: "ghost",
@@ -156,18 +136,8 @@ const buttonStyles = cva(
       },
       {
         variant: "ghost",
-        colorscheme: "black",
+        colorscheme: "dark",
         className: "text-black bg-transparent hover:bg-black/20",
-      },
-      {
-        variant: "ghost",
-        colorscheme: "white",
-        className: "text-white bg-transparent hover:bg-white/20",
-      },
-      {
-        variant: "ghost",
-        colorscheme: "gray",
-        className: "text-gray bg-transparent hover:bg-gray/20",
       },
     ],
     defaultVariants: {
