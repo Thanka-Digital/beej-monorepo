@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, useState } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
 import { cn } from "../../utils/cn";
@@ -21,7 +21,7 @@ const inputStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "danger",
+      colorscheme: "primary",
     },
   }
 );
@@ -30,6 +30,7 @@ interface IInputProps {
   className?: string;
   label?: string;
   id?: string;
+  error?: string;
 }
 
 type InputProps = ComponentProps<"input"> &
@@ -43,6 +44,7 @@ export default forwardRef<HTMLInputElement, InputProps>(
       label = "",
       id = "",
       variant,
+      error,
       padding,
       colorscheme,
       required,
@@ -64,13 +66,15 @@ export default forwardRef<HTMLInputElement, InputProps>(
               padding,
               colorscheme,
               className,
-            })
+            }),
+            error && "animate-vibrate border-danger focus:outline-danger"
           )}
           required={required}
           disabled={disabled}
           aria-disabled={disabled}
           {...rest}
         />
+        {error && <span className="text-danger text-sm">{error}</span>}
       </div>
     );
   }

@@ -10,7 +10,7 @@ import {
 
 const buttonStyles = cva(
   [
-    "flex gap-2 items-center rounded-md outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
+    "flex gap-2 active:translate-y-[0.5px] items-center rounded-md outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
   ],
   {
     variants: {
@@ -29,35 +29,35 @@ const buttonStyles = cva(
         colorscheme: "secondary",
         className: "bg-secondary hover:bg-secondary-dark text-secondary-fg",
       },
-      // {
-      //   variant: "solid",
-      //   colorscheme: "accent",
-      //   className: "bg-accent",
-      // },
+      {
+        variant: "solid",
+        colorscheme: "accent",
+        className: "bg-accent hover:bg-accent-dark text-accent-fg",
+      },
       {
         variant: "solid",
         colorscheme: "success",
-        className: "bg-success text-white",
+        className: "bg-success hover:bg-success-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "danger",
-        className: "bg-danger text-white",
+        className: "bg-danger hover:bg-danger-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "warning",
-        className: "bg-warning text-white",
+        className: "bg-warning hover:bg-warning-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "info",
-        className: "bg-info text-white",
+        className: "bg-info hover:bg-info-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "dark",
-        className: "bg-black text-white",
+        className: "bg-black hover:bg-dark-dark text-white",
       },
       {
         variant: "outline",
@@ -69,11 +69,11 @@ const buttonStyles = cva(
         colorscheme: "secondary",
         className: "text-secondary border-secondary hover:bg-secondary-subtle",
       },
-      // {
-      //   variant: "outline",
-      //   colorscheme: "accent",
-      //   className: "text-accent border-accent hover:bg-accent/20",
-      // },
+      {
+        variant: "outline",
+        colorscheme: "accent",
+        className: "text-accent border-accent hover:bg-accent/20",
+      },
       {
         variant: "outline",
         colorscheme: "success",
@@ -124,11 +124,11 @@ const buttonStyles = cva(
         colorscheme: "danger",
         className: "text-danger bg-transparent hover:bg-danger/20",
       },
-      // {
-      //   variant: "ghost",
-      //   colorscheme: "accent",
-      //   className: "text-accent bg-transparent hover:bg-accent/20",
-      // },
+      {
+        variant: "ghost",
+        colorscheme: "accent",
+        className: "text-accent bg-transparent hover:bg-accent/20",
+      },
       {
         variant: "ghost",
         colorscheme: "info",

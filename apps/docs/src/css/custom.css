@@ -6,28 +6,77 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+@keyframes vibrate {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
 @theme {
   --color-primary: #475199;
-  --color-primary-dark: #333D79;
-  --color-primary-subtle: #F1F2F9;
-  --color-primary-light: #DFE1EC;
-  --color-primary-fg: #FFFFFF;
+  --color-primary-dark: #333d79;
+  --color-primary-subtle: #f1f2f9;
+  --color-primary-light: #dfe1ec;
+  --color-primary-fg: #ffffff;
 
-  --color-secondary: #E7202C;
-  --color-secondary-dark: #CD1220;
-  --color-secondary-subtle: #FFE9EB;
-  --color-secondary-light: #FFD2D5;
-  --color-secondary-fg: #FFFFFF;
-
-  --color-gray-lighter: #DADADA;
-  --color-gray-darker: #9C9B9B;
+  --color-secondary: #e7202c;
+  --color-secondary-dark: #cd1220;
+  --color-secondary-subtle: #ffe9eb;
+  --color-secondary-light: #ffd2d5;
+  --color-secondary-fg: #ffffff;
 
   --color-accent: #ff3860;
+  --color-accent-dark: #cc2d4d;
+  --color-accent-subtle: #fff1f4;
+  --color-accent-light: #ffd6de;
+  --color-accent-fg: #ffffff;
+
   --color-danger: #e3342f;
+  --color-danger-dark: #b32728;
+  --color-danger-subtle: #fbeaea;
+  --color-danger-light: #f5b5b5;
+  --color-danger-fg: #ffffff;
+
   --color-success: #38c172;
+  --color-success-dark: #2f9b5d;
+  --color-success-subtle: #eafaf1;
+  --color-success-light: #b5f0cd;
+  --color-success-fg: #ffffff;
+
   --color-warning: #f6993f;
+  --color-warning-dark: #c47732;
+  --color-warning-subtle: #fff5ea;
+  --color-warning-light: #ffd8a8;
+  --color-warning-fg: #ffffff;
+
   --color-info: #6cb2eb;
+  --color-info-dark: #5890bb;
+  --color-info-subtle: #eef7fd;
+  --color-info-light: #b6d9f4;
+  --color-info-fg: #ffffff;
+
   --color-neutral: #3d4451;
+  --color-neutral-dark: #2f333d;
+  --color-neutral-subtle: #f2f3f5;
+  --color-neutral-light: #d1d3d8;
+  --color-neutral-fg: #ffffff;
+
+  --animate-vibrate: vibrate 0.3s linear;
 }
 
 /* You can override the default Infima variables here. */
@@ -44,7 +93,7 @@
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
