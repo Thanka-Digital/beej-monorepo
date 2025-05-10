@@ -4,7 +4,7 @@ import prompts from "prompts";
 import colors from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
-import { DEPENDENCIES_LIST } from "./utils/pkgDependency";
+import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./utils/pkgDependency";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
@@ -419,29 +419,17 @@ function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key
     fs.readFileSync(path.join(commonDir, "package.json"), "utf-8")
   )
 
-  const selectedDependencies = selectedOptions.map((so) => DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST]).flat(1);
-
-  pkg.dependencies = pkg.dependencies || {}
-  Object.keys(pkg.devDependencies).forEach((dep) => {
-    if (selectedDependencies.some((prefix) => dep.startsWith(prefix))) {
-      pkg.dependencies[dep] = pkg.devDependencies[dep];
-    }
-  });
-
-  // TODO: make it more dynamic
-  pkg.devDependencies = {
-    "@eslint/js": "^9.19.0",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.18",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0",
-    "vite-tsconfig-paths": "^5.1.4"
+  let selectedDependencies = {};
+  for (let i = 0; i < selectedOptions.length; i++) {
+    const so = selectedOptions[i];
+    selectedDependencies = { ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
   }
+
+  pkg.dependencies = {
+    ...pkg.dependencies,
+    ...selectedDependencies
+  }
+  pkg.devDependencies = DEV_DEPENDENCY_LIST
 
   return pkg;
 }
