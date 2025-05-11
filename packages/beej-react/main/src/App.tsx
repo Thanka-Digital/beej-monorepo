@@ -1,10 +1,9 @@
-// import AppRouter from "@/routes/AppRoute";
-import AppTestRouter from "../test/AppRoute.test";
+import AppRouter from "@/routes/AppRoute";
 
 function App() {
   return (
     <>
-      <AppTestRouter />
+      <AppRouter />
     </>
   );
 }
