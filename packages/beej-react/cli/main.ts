@@ -5,22 +5,18 @@ import colors from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
 import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./utils/pkgDependency";
+import { testVersion } from "./utils/testVersion";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
 
 type Configs = {
-  library?: "next" | "react";
   component?: "tailwind" | "chakra" | "mantine";
   state?: "context" | "redux" | "jotai";
   api?: "fetch" | "rtk" | "tanstack";
 };
 type ColorFunc = (str: string | number) => string;
-type LibraryVariant = {
-  name: string;
-  displayName: string;
-  color: ColorFunc;
-};
+
 type ComponentVariant = {
   name: string;
   displayName: string;
@@ -37,18 +33,6 @@ type ApiVariant = {
   color: ColorFunc;
 };
 
-const libraries: LibraryVariant[] = [
-  {
-    name: "react",
-    displayName: "React",
-    color: cyanBright,
-  },
-  // {
-  //   name: "next",
-  //   displayName: "Next.js",
-  //   color: yellowBright,
-  // }
-];
 const components: ComponentVariant[] = [
   {
     name: "tailwindcss",
@@ -104,12 +88,11 @@ const apis: ApiVariant[] = [
 // Agruments parsed with minimist
 const args = minimist<Configs>(process.argv.slice(2), {
   default: { help: false },
-  alias: { h: "help", l: "library", c: "component", s: "state", a: "api" },
+  alias: { h: "help", c: "component", s: "state", a: "api", t: "test" },
   string: ["_"],
 });
 const cwd = process.cwd();
 
-const LIBRARIES = ["next", "react"];
 const COMPONENTS = ["chakra", "mantine", "tailwindcss"];
 const STATES = ["context", "jotai", "redux"];
 const APIS = ["fetch", "rtk", "tanstack"];
@@ -121,10 +104,10 @@ const renameFiles: Record<string, string> = {
 
 export const main = async () => {
   const argTargetDir = args._[0];
-  const argLibrary = args.library || args.l;
   const argComponent = args.component || args.c;
   const argState = args.state || args.s;
   const argApi = args.api || args.a;
+  const isTest = args.test || args.t;
 
   const environment = process.env.NODE_ENV || "production";
 
@@ -143,7 +126,6 @@ export const main = async () => {
   let result: prompts.Answers<
     | "projectName"
     | "packageName"
-    | "library"
     | "component"
     | "state"
     | "api"
@@ -202,24 +184,6 @@ export const main = async () => {
           initial: () => toValidPackageName(getProjectName()),
           validate: (dir) =>
             isValidPackageName(dir) || "Invalid package.json name",
-        },
-        {
-          type: argLibrary && LIBRARIES.includes(argLibrary) ? null : "select",
-          name: "library",
-          message:
-            typeof argLibrary === "string" && !LIBRARIES.includes(argLibrary)
-              ? reset(
-                `"${argLibrary}" isn't available. Please choose from below: `,
-              )
-              : reset("Select a library:"),
-          initial: 0,
-          choices: libraries.map((library) => {
-            const libraryColor = library.color;
-            return {
-              title: libraryColor(library.displayName || library.name),
-              value: library.name,
-            };
-          }),
         },
         {
           type:
@@ -288,9 +252,8 @@ export const main = async () => {
   }
 
   // get the prompts result
-  const { packageName, library, component, state, api, overwrite } = result;
+  const { packageName, component, state, api, overwrite } = result;
 
-  const templateRootLibrary = library || argLibrary;
   const templateComponentVariant = component || argComponent;
   const templateStateVariant = state || argState;
   const templateApiVariant = api || argApi;
@@ -352,13 +315,13 @@ export const main = async () => {
   );
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
-    (f) => f !== "package.json",
+    (f) => f !== "package.json" && f !== "App.tsx",
   )) {
     write({
       file,
       templateDir: commonDir,
-      filesToIgnore: ["AppRoute.test.tsx", "routes.test.tsx"],
-      foldersToIgnore: ["test", "libraries"],
+      filesToIgnore: ["App.test.tsx"],
+      foldersToIgnore: isTest ? ["libraries", "node_modules"] : ["__test__", "libraries", "node_modules"],
     });
   }
 
@@ -388,6 +351,9 @@ export const main = async () => {
   pkg.name = packageName || getProjectName();
 
   write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
+  if (isTest) {
+    write({ file: "App.tsx", content: testVersion(commonDir + "/src/App.test.tsx") + "\n", templateDir: commonDir + "/src", targetFolder: "src" });
+  }
 
   const cdProjectRelativePath = path.relative(cwd, root);
   console.log(
@@ -493,32 +459,34 @@ function copy(
       if (foldersToIgnore.includes(fileDirName)) {
         console.log(`  ${red("Ignoring")} ${fileDirName}`);
       } else {
-        copyDir(src, dest, src.split(path.sep).pop() || fileDirName);
+        copyDir(src, dest, filesToIgnore);
       }
     } else {
-      copyDir(src, dest, src.split(path.sep).pop() || fileDirName);
+      copyDir(src, dest, filesToIgnore);
     }
   } else {
-    if (filesToIgnore) {
-      if (filesToIgnore.includes(fileDirName)) {
-        console.log(`  ${red("Ignoring")} ${fileDirName}`);
-      } else {
-        console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
-        fs.copyFileSync(src, dest);
-      }
-    } else {
-      console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
-      fs.copyFileSync(src, dest);
-    }
+    console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
+    fs.copyFileSync(src, dest);
   }
 }
 
-function copyDir(srcDir: string, destDir: string, fileDirName: string) {
+function copyDir(srcDir: string, destDir: string, ignoreList?: string[]) {
   fs.mkdirSync(destDir, { recursive: true });
   for (const file of fs.readdirSync(srcDir)) {
     const srcFile = path.resolve(srcDir, file);
     const destFile = path.resolve(destDir, file);
-    copy(srcFile, destFile, fileDirName);
+    const destFileSeparated = destFile.split(path.sep)
+    const destFileName = destFileSeparated[destFileSeparated.length - 1];
+
+    if (ignoreList) {
+      if (ignoreList.includes(destFileName)) {
+        console.log(`  ${red("Ignoring")} ${destFileName}`);
+      } else {
+        copy(srcFile, destFile, destFileName)
+      }
+    } else {
+      copy(srcFile, destFile, destFileName);
+    }
   }
 }
 
