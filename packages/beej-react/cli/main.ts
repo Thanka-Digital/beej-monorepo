@@ -407,7 +407,7 @@ function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key
   let selectedDependencies = {};
   for (let i = 0; i < selectedOptions.length; i++) {
     const so = selectedOptions[i];
-    selectedDependencies = { ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
+    selectedDependencies = { ...selectedDependencies, ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
   }
 
   pkg.dependencies = {

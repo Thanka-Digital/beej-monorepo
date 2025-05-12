@@ -18,6 +18,13 @@ export const DEPENDENCIES_LIST = {
     "@mantine/core": "^7.17.0",
     "@mantine/hooks": "^7.17.0",
   },
+  "redux": {
+    "react-redux": "^9.2.0",
+    "@reduxjs/toolkit": "^2.5.1",
+  },
+  "jotai": {
+    "jotai": "^2.12.4",
+  },
 }
 
 export const DEV_DEPENDENCY_LIST = {
