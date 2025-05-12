@@ -8,7 +8,7 @@ Theming is not fully customizable for all component libraries.
 
 :::
 
-In beej we have kept the theming process as simple as possible for now.
+In beej we are trying to keep the theming process as simple as possible.
 
 Since there are multiple UI libraries to choose from and they all handle theming differently we have tried to create a central theming file under `theme` folder.
 
@@ -22,7 +22,6 @@ import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 const customConfig = defineConfig({
   theme: {
     tokens: {
-      // highlight-start
       colors: {
         brand: {
           50: { value: "#faf5ff" },
@@ -109,7 +108,6 @@ const customConfig = defineConfig({
           focusRing: { value: "{colors.yellow.500}" },
         },
       },
-      // highlight-end
     },
   },
 });
@@ -130,7 +128,6 @@ For more theme configuration [see chakra's docs](https://chakra-ui.com/docs/them
 import { createTheme } from "@mantine/core";
 
 export const customTheme = createTheme({
-  // highlight-start
   colors: {
     primary: [
       "#f3e8ff",
@@ -157,20 +154,17 @@ export const customTheme = createTheme({
       "#021716",
     ],
   },
-  // highlight-end
 });
 ```
 
 You can change the primary and secondary color as per your project need.
-
 See the mantine's [colors generator](https://mantine.dev/colors-generator/) for generating your own color palette from your _brand_ color value.
 
 For more theme configuration [see mantines's docs](https://mantine.dev/theming/theme-object/)
 
 ### Tailwind Css
 
-```css title="theme config file for mantine"
-/* highlight-start */
+```css title="theme config file for tailwindcss"
 @import "tailwindcss";
 
 @theme {
@@ -183,11 +177,9 @@ For more theme configuration [see mantines's docs](https://mantine.dev/theming/t
   --color-info: #6cb2eb;
   --color-neutral: #3d4451;
 }
-/* highlight-end */
-
 ....
 ```
 
-For tailwind theme configuration we are using the `@tailwindcss/vite` package which is the current latest way of integrating tailwind to `vite` projects. They use the new concept of **theme variable** which is used directly in the `css`
+For tailwind theme configuration we are using the `@tailwindcss/vite` package which is the current latest way of integrating tailwind to `vite` projects alongside `tailwind v4`. They use the new concept of **theme variable** which is used directly in the `css`
 
 For more detial on theme variable [see tailwindcss's docs](https://tailwindcss.com/docs/theme)
