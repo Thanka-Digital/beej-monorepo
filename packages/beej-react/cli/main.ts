@@ -105,6 +105,7 @@ const APIS = ["fetch", "rtk", "tanstack"];
 const defaultTargetDir = "beej-app";
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
+  "_package.json": "package.json",
 };
 
 export const main = async () => {
@@ -320,7 +321,7 @@ export const main = async () => {
   );
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
-    (f) => f !== "package.json" && f !== "App.tsx",
+    (f) => f !== "_package.json" && f !== "App.tsx",
   )) {
     write({
       file,
@@ -341,7 +342,7 @@ export const main = async () => {
   );
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
   for (const file of filesToCopyFromComponentDir.filter(
-    (f) => f !== "package.json",
+    (f) => f !== "_package.json",
   )) {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
@@ -366,7 +367,7 @@ export const main = async () => {
     write({ file, templateDir: stateDir, targetFolder: "src" });
   }
 
-  const pkg = updatePkgJsonDeps(commonDir, [component])
+  const pkg = updatePkgJsonDeps(commonDir, [component, state])
   pkg.name = packageName || getProjectName();
 
   write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
@@ -401,7 +402,7 @@ export const main = async () => {
 
 function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
   const pkg = JSON.parse(
-    fs.readFileSync(path.join(commonDir, "package.json"), "utf-8")
+    fs.readFileSync(path.join(commonDir, "_package.json"), "utf-8")
   )
 
   let selectedDependencies = {};
