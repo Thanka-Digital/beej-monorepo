@@ -56,16 +56,21 @@ const states: StateVariant[] = [
     displayName: "Context API",
     color: cyanBright,
   },
-  // {
-  //   name: "redux",
-  //   displayName: "Redux",
-  //   color: greenBright,
-  // },
-  // {
-  //   name: "jotai",
-  //   displayName: "Jotai",
-  //   color: yellowBright,
-  // }
+  {
+    name: "redux",
+    displayName: "Redux",
+    color: greenBright,
+  },
+  {
+    name: "zustand",
+    displayName: "Zustand",
+    color: blueBright,
+  },
+  {
+    name: "jotai",
+    displayName: "Jotai",
+    color: yellowBright,
+  }
 ];
 const apis: ApiVariant[] = [
   {
@@ -94,7 +99,7 @@ const args = minimist<Configs>(process.argv.slice(2), {
 const cwd = process.cwd();
 
 const COMPONENTS = ["chakra", "mantine", "tailwindcss"];
-const STATES = ["context", "jotai", "redux"];
+const STATES = ["context", "jotai", "redux", "zustand"];
 const APIS = ["fetch", "rtk", "tanstack"];
 
 const defaultTargetDir = "beej-app";
@@ -345,6 +350,20 @@ export const main = async () => {
     // } else {
     //   write({ file, templateDir: componentDir });
     // }
+  }
+
+  // Scaffold the files according to the component library selected
+  console.log(
+    `\n${blueBright(` Scaffolding ${templateStateVariant} files`)}`,
+  );
+
+  const stateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateStateVariant}`,
+  )
+  const filesToCopyFromStateDir = fs.readdirSync(stateDir);
+  for (const file of filesToCopyFromStateDir) {
+    write({ file, templateDir: stateDir, targetFolder: "src" });
   }
 
   const pkg = updatePkgJsonDeps(commonDir, [component])
