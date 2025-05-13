@@ -1,5 +1,16 @@
 # @beej/react
 
+## 0.1.0
+
+### Minor Changes
+
+- 14fd753: fix: fix dependency overflow issue
+
+### Patch Changes
+
+- 340a89c: Update: add options for state management
+- 82dcea1: fix: fixes test code in release issue
+
 ## 0.0.9
 
 ### Patch Changes

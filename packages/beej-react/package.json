@@ -1,6 +1,6 @@
 {
   "name": "@thanka-digital/beej-react",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.",
   "type": "module",
   "scripts": {
