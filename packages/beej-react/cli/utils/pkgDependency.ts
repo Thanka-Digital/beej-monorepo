@@ -25,6 +25,9 @@ export const DEPENDENCIES_LIST = {
   "jotai": {
     "jotai": "^2.12.4",
   },
+  "zustand": {
+    "zustand": "^5.0.4",
+  }
 }
 
 export const DEV_DEPENDENCY_LIST = {
