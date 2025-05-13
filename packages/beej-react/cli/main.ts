@@ -4,23 +4,19 @@ import prompts from "prompts";
 import colors from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
-import { DEPENDENCIES_LIST } from "./utils/pkgDependency";
+import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./utils/pkgDependency";
+import { testVersion } from "./utils/testVersion";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
 
 type Configs = {
-  library?: "next" | "react";
   component?: "tailwind" | "chakra" | "mantine";
   state?: "context" | "redux" | "jotai";
   api?: "fetch" | "rtk" | "tanstack";
 };
 type ColorFunc = (str: string | number) => string;
-type LibraryVariant = {
-  name: string;
-  displayName: string;
-  color: ColorFunc;
-};
+
 type ComponentVariant = {
   name: string;
   displayName: string;
@@ -37,18 +33,6 @@ type ApiVariant = {
   color: ColorFunc;
 };
 
-const libraries: LibraryVariant[] = [
-  {
-    name: "react",
-    displayName: "React",
-    color: cyanBright,
-  },
-  // {
-  //   name: "next",
-  //   displayName: "Next.js",
-  //   color: yellowBright,
-  // }
-];
 const components: ComponentVariant[] = [
   {
     name: "tailwindcss",
@@ -72,16 +56,21 @@ const states: StateVariant[] = [
     displayName: "Context API",
     color: cyanBright,
   },
-  // {
-  //   name: "redux",
-  //   displayName: "Redux",
-  //   color: greenBright,
-  // },
-  // {
-  //   name: "jotai",
-  //   displayName: "Jotai",
-  //   color: yellowBright,
-  // }
+  {
+    name: "redux",
+    displayName: "Redux",
+    color: greenBright,
+  },
+  {
+    name: "zustand",
+    displayName: "Zustand",
+    color: blueBright,
+  },
+  {
+    name: "jotai",
+    displayName: "Jotai",
+    color: yellowBright,
+  }
 ];
 const apis: ApiVariant[] = [
   {
@@ -104,27 +93,27 @@ const apis: ApiVariant[] = [
 // Agruments parsed with minimist
 const args = minimist<Configs>(process.argv.slice(2), {
   default: { help: false },
-  alias: { h: "help", l: "library", c: "component", s: "state", a: "api" },
+  alias: { h: "help", c: "component", s: "state", a: "api", t: "test" },
   string: ["_"],
 });
 const cwd = process.cwd();
 
-const LIBRARIES = ["next", "react"];
 const COMPONENTS = ["chakra", "mantine", "tailwindcss"];
-const STATES = ["context", "jotai", "redux"];
+const STATES = ["context", "jotai", "redux", "zustand"];
 const APIS = ["fetch", "rtk", "tanstack"];
 
 const defaultTargetDir = "beej-app";
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
+  "_package.json": "package.json",
 };
 
 export const main = async () => {
   const argTargetDir = args._[0];
-  const argLibrary = args.library || args.l;
   const argComponent = args.component || args.c;
   const argState = args.state || args.s;
-  const argApi = args.api || args.a;
+  // const argApi = args.api || args.a;
+  const isTest = args.test || args.t;
 
   const environment = process.env.NODE_ENV || "production";
 
@@ -143,10 +132,9 @@ export const main = async () => {
   let result: prompts.Answers<
     | "projectName"
     | "packageName"
-    | "library"
     | "component"
     | "state"
-    | "api"
+    // | "api"
     | "overwrite"
   >;
   try {
@@ -204,24 +192,6 @@ export const main = async () => {
             isValidPackageName(dir) || "Invalid package.json name",
         },
         {
-          type: argLibrary && LIBRARIES.includes(argLibrary) ? null : "select",
-          name: "library",
-          message:
-            typeof argLibrary === "string" && !LIBRARIES.includes(argLibrary)
-              ? reset(
-                `"${argLibrary}" isn't available. Please choose from below: `,
-              )
-              : reset("Select a library:"),
-          initial: 0,
-          choices: libraries.map((library) => {
-            const libraryColor = library.color;
-            return {
-              title: libraryColor(library.displayName || library.name),
-              value: library.name,
-            };
-          }),
-        },
-        {
           type:
             argComponent && COMPONENTS.includes(argComponent) ? null : "select",
           name: "component",
@@ -259,22 +229,22 @@ export const main = async () => {
             };
           }),
         },
-        {
-          type: argApi && APIS.includes(argApi) ? null : "select",
-          name: "api",
-          message:
-            typeof argApi === "string" && !APIS.includes(argApi)
-              ? reset(`"${argApi}" isn't available. Please choose from below: `)
-              : reset("Select a API style:"),
-          initial: 0,
-          choices: apis.map((api) => {
-            const apiColor = api.color;
-            return {
-              title: apiColor(api.displayName || api.name),
-              value: api.name,
-            };
-          }),
-        },
+        // {
+        //   type: argApi && APIS.includes(argApi) ? null : "select",
+        //   name: "api",
+        //   message:
+        //     typeof argApi === "string" && !APIS.includes(argApi)
+        //       ? reset(`"${argApi}" isn't available. Please choose from below: `)
+        //       : reset("Select a API style:"),
+        //   initial: 0,
+        //   choices: apis.map((api) => {
+        //     const apiColor = api.color;
+        //     return {
+        //       title: apiColor(api.displayName || api.name),
+        //       value: api.name,
+        //     };
+        //   }),
+        // },
       ],
       {
         onCancel: () => {
@@ -288,12 +258,11 @@ export const main = async () => {
   }
 
   // get the prompts result
-  const { packageName, library, component, state, api, overwrite } = result;
+  const { packageName, component, state, overwrite } = result;
 
-  const templateRootLibrary = library || argLibrary;
   const templateComponentVariant = component || argComponent;
   const templateStateVariant = state || argState;
-  const templateApiVariant = api || argApi;
+  // const templateApiVariant = api || argApi;
 
   const root = path.join(cwd, targetDir);
 
@@ -352,13 +321,13 @@ export const main = async () => {
   );
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
-    (f) => f !== "package.json",
+    (f) => f !== "_package.json" && f !== "App.tsx",
   )) {
     write({
       file,
       templateDir: commonDir,
-      filesToIgnore: ["AppRoute.test.tsx", "routes.test.tsx"],
-      foldersToIgnore: ["test", "libraries"],
+      filesToIgnore: ["App.test.tsx"],
+      foldersToIgnore: isTest ? ["libraries", "node_modules"] : ["__test__", "libraries", "node_modules"],
     });
   }
 
@@ -373,7 +342,7 @@ export const main = async () => {
   );
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
   for (const file of filesToCopyFromComponentDir.filter(
-    (f) => f !== "package.json",
+    (f) => f !== "_package.json",
   )) {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
@@ -384,10 +353,27 @@ export const main = async () => {
     // }
   }
 
-  const pkg = updatePkgJsonDeps(commonDir, [component])
+  // Scaffold the files according to the component library selected
+  console.log(
+    `\n${blueBright(` Scaffolding ${templateStateVariant} files`)}`,
+  );
+
+  const stateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateStateVariant}`,
+  )
+  const filesToCopyFromStateDir = fs.readdirSync(stateDir);
+  for (const file of filesToCopyFromStateDir) {
+    write({ file, templateDir: stateDir, targetFolder: "src" });
+  }
+
+  const pkg = updatePkgJsonDeps(commonDir, [component, state])
   pkg.name = packageName || getProjectName();
 
   write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
+  if (isTest) {
+    write({ file: "App.tsx", content: testVersion(commonDir + "/src/App.test.tsx") + "\n", templateDir: commonDir + "/src", targetFolder: "src" });
+  }
 
   const cdProjectRelativePath = path.relative(cwd, root);
   console.log(
@@ -416,32 +402,20 @@ export const main = async () => {
 
 function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
   const pkg = JSON.parse(
-    fs.readFileSync(path.join(commonDir, "package.json"), "utf-8")
+    fs.readFileSync(path.join(commonDir, "_package.json"), "utf-8")
   )
 
-  const selectedDependencies = selectedOptions.map((so) => DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST]).flat(1);
-
-  pkg.dependencies = pkg.dependencies || {}
-  Object.keys(pkg.devDependencies).forEach((dep) => {
-    if (selectedDependencies.some((prefix) => dep.startsWith(prefix))) {
-      pkg.dependencies[dep] = pkg.devDependencies[dep];
-    }
-  });
-
-  // TODO: make it more dynamic
-  pkg.devDependencies = {
-    "@eslint/js": "^9.19.0",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.18",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0",
-    "vite-tsconfig-paths": "^5.1.4"
+  let selectedDependencies = {};
+  for (let i = 0; i < selectedOptions.length; i++) {
+    const so = selectedOptions[i];
+    selectedDependencies = { ...selectedDependencies, ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
   }
+
+  pkg.dependencies = {
+    ...pkg.dependencies,
+    ...selectedDependencies
+  }
+  pkg.devDependencies = DEV_DEPENDENCY_LIST
 
   return pkg;
 }
@@ -505,32 +479,34 @@ function copy(
       if (foldersToIgnore.includes(fileDirName)) {
         console.log(`  ${red("Ignoring")} ${fileDirName}`);
       } else {
-        copyDir(src, dest, src.split(path.sep).pop() || fileDirName);
+        copyDir(src, dest, filesToIgnore);
       }
     } else {
-      copyDir(src, dest, src.split(path.sep).pop() || fileDirName);
+      copyDir(src, dest, filesToIgnore);
     }
   } else {
-    if (filesToIgnore) {
-      if (filesToIgnore.includes(fileDirName)) {
-        console.log(`  ${red("Ignoring")} ${fileDirName}`);
-      } else {
-        console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
-        fs.copyFileSync(src, dest);
-      }
-    } else {
-      console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
-      fs.copyFileSync(src, dest);
-    }
+    console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
+    fs.copyFileSync(src, dest);
   }
 }
 
-function copyDir(srcDir: string, destDir: string, fileDirName: string) {
+function copyDir(srcDir: string, destDir: string, ignoreList?: string[]) {
   fs.mkdirSync(destDir, { recursive: true });
   for (const file of fs.readdirSync(srcDir)) {
     const srcFile = path.resolve(srcDir, file);
     const destFile = path.resolve(destDir, file);
-    copy(srcFile, destFile, fileDirName);
+    const destFileSeparated = destFile.split(path.sep)
+    const destFileName = destFileSeparated[destFileSeparated.length - 1];
+
+    if (ignoreList) {
+      if (ignoreList.includes(destFileName)) {
+        console.log(`  ${red("Ignoring")} ${destFileName}`);
+      } else {
+        copy(srcFile, destFile, destFileName)
+      }
+    } else {
+      copy(srcFile, destFile, destFileName);
+    }
   }
 }
 

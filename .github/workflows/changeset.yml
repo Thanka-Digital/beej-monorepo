@@ -1,25 +1,25 @@
-name: Bump version of packages
+name: Create Changeset files
 
 on:
-  push:
+  pull_request:
     branches: dev
-    # types: [labeled, synchronize]
-  # workflow_dispatch:
-  #   inputs:
-  #     type:
-  #       description: |
-  #         The SemVer type <major|minor|patch> to use manually by
-  #         overriding the label type
-  #       required: true
-  #     name:
-  #       description: |
-  #         The package name to use when running manually. If not specified, it will
-  #         be determined by looking at the closest package.json to the first changed
-  #         file.
-  #       required: false
-  #     summary:
-  #       description: The changeset summary to use when running manually.
-  #       required: false
+    types: [labeled, synchronize]
+  workflow_dispatch:
+    inputs:
+      type:
+        description: |
+          The SemVer type <major|minor|patch> to use manually by
+          overriding the label type
+        required: true
+      name:
+        description: |
+          The package name to use when running manually. If not specified, it will
+          be determined by looking at the closest package.json to the first changed
+          file.
+        required: false
+      summary:
+        description: The changeset summary to use when running manually.
+        required: false
 
 jobs:
   changeset:
@@ -35,6 +35,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -46,19 +47,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Extract Label
-      #   id: extract_label
-      #   run: echo "LABEL_TYPE=$(jq -r '.pull_request.labels[].name | select(startswith("changeset:"))' $GITHUB_EVENT_PATH | cut -d':' -f2)" >> $GITHUB_ENV
-
-      # - name: Changeset Action
-      #   uses: generates/changeset-action@v3.0.0
-      #   with:
-      #     type: ${{ env.LABEL_TYPE }}
-      # - name: Commit Changes
-      #   uses: generates/commit-action@v1.0.2
-      #   with:
-      #     token: ${{ secrets.GH_PAT }}
+      - name: Changeset Action
+        uses: generates/changeset-action@v3.0.0
+        with:
+          token: ${{ secrets.GH_PAT }}
+          type: ${{ env.LABEL_TYPE }}
+      - name: Commit Changes
+        uses: generates/commit-action@v1.0.2
+        with:
+          token: ${{ secrets.GH_PAT }}

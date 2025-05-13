@@ -17,9 +17,7 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="text-center text-xl">{siteConfig.tagline}</p>
-        <Button variant="outline" colorscheme="black" className="rounded-md">
-          Documentation
-        </Button>
+        <Button className="rounded-md">Documentation</Button>
       </div>
     </div>
   );

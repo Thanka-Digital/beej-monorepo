@@ -13,5 +13,5 @@
     "declaration": true
   },
   "include": ["cli", "main"],
-  "exclude": ["node_modules", "dist", ".github"]
+  "exclude": ["node_modules", "dist", ".github", "App.test.tsx", "__test__"]
 }

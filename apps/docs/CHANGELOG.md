@@ -1,5 +1,13 @@
 # @beej/docs
 
+## 0.0.3
+
+### Patch Changes
+
+- 55fb40b: Changeset CI/CD: This PR checks the changeset CI CD
+- Updated dependencies [55fb40b]
+  - @thanka-digital/beej-component@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes
