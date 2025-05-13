@@ -56,16 +56,21 @@ const states: StateVariant[] = [
     displayName: "Context API",
     color: cyanBright,
   },
-  // {
-  //   name: "redux",
-  //   displayName: "Redux",
-  //   color: greenBright,
-  // },
-  // {
-  //   name: "jotai",
-  //   displayName: "Jotai",
-  //   color: yellowBright,
-  // }
+  {
+    name: "redux",
+    displayName: "Redux",
+    color: greenBright,
+  },
+  {
+    name: "zustand",
+    displayName: "Zustand",
+    color: blueBright,
+  },
+  {
+    name: "jotai",
+    displayName: "Jotai",
+    color: yellowBright,
+  }
 ];
 const apis: ApiVariant[] = [
   {
@@ -94,19 +99,20 @@ const args = minimist<Configs>(process.argv.slice(2), {
 const cwd = process.cwd();
 
 const COMPONENTS = ["chakra", "mantine", "tailwindcss"];
-const STATES = ["context", "jotai", "redux"];
+const STATES = ["context", "jotai", "redux", "zustand"];
 const APIS = ["fetch", "rtk", "tanstack"];
 
 const defaultTargetDir = "beej-app";
 const renameFiles: Record<string, string> = {
   _gitignore: ".gitignore",
+  "_package.json": "package.json",
 };
 
 export const main = async () => {
   const argTargetDir = args._[0];
   const argComponent = args.component || args.c;
   const argState = args.state || args.s;
-  const argApi = args.api || args.a;
+  // const argApi = args.api || args.a;
   const isTest = args.test || args.t;
 
   const environment = process.env.NODE_ENV || "production";
@@ -128,7 +134,7 @@ export const main = async () => {
     | "packageName"
     | "component"
     | "state"
-    | "api"
+    // | "api"
     | "overwrite"
   >;
   try {
@@ -223,22 +229,22 @@ export const main = async () => {
             };
           }),
         },
-        {
-          type: argApi && APIS.includes(argApi) ? null : "select",
-          name: "api",
-          message:
-            typeof argApi === "string" && !APIS.includes(argApi)
-              ? reset(`"${argApi}" isn't available. Please choose from below: `)
-              : reset("Select a API style:"),
-          initial: 0,
-          choices: apis.map((api) => {
-            const apiColor = api.color;
-            return {
-              title: apiColor(api.displayName || api.name),
-              value: api.name,
-            };
-          }),
-        },
+        // {
+        //   type: argApi && APIS.includes(argApi) ? null : "select",
+        //   name: "api",
+        //   message:
+        //     typeof argApi === "string" && !APIS.includes(argApi)
+        //       ? reset(`"${argApi}" isn't available. Please choose from below: `)
+        //       : reset("Select a API style:"),
+        //   initial: 0,
+        //   choices: apis.map((api) => {
+        //     const apiColor = api.color;
+        //     return {
+        //       title: apiColor(api.displayName || api.name),
+        //       value: api.name,
+        //     };
+        //   }),
+        // },
       ],
       {
         onCancel: () => {
@@ -252,11 +258,11 @@ export const main = async () => {
   }
 
   // get the prompts result
-  const { packageName, component, state, api, overwrite } = result;
+  const { packageName, component, state, overwrite } = result;
 
   const templateComponentVariant = component || argComponent;
   const templateStateVariant = state || argState;
-  const templateApiVariant = api || argApi;
+  // const templateApiVariant = api || argApi;
 
   const root = path.join(cwd, targetDir);
 
@@ -315,7 +321,7 @@ export const main = async () => {
   );
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
-    (f) => f !== "package.json" && f !== "App.tsx",
+    (f) => f !== "_package.json" && f !== "App.tsx",
   )) {
     write({
       file,
@@ -336,7 +342,7 @@ export const main = async () => {
   );
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
   for (const file of filesToCopyFromComponentDir.filter(
-    (f) => f !== "package.json",
+    (f) => f !== "_package.json",
   )) {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
@@ -347,7 +353,21 @@ export const main = async () => {
     // }
   }
 
-  const pkg = updatePkgJsonDeps(commonDir, [component])
+  // Scaffold the files according to the component library selected
+  console.log(
+    `\n${blueBright(` Scaffolding ${templateStateVariant} files`)}`,
+  );
+
+  const stateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateStateVariant}`,
+  )
+  const filesToCopyFromStateDir = fs.readdirSync(stateDir);
+  for (const file of filesToCopyFromStateDir) {
+    write({ file, templateDir: stateDir, targetFolder: "src" });
+  }
+
+  const pkg = updatePkgJsonDeps(commonDir, [component, state])
   pkg.name = packageName || getProjectName();
 
   write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
@@ -382,13 +402,13 @@ export const main = async () => {
 
 function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
   const pkg = JSON.parse(
-    fs.readFileSync(path.join(commonDir, "package.json"), "utf-8")
+    fs.readFileSync(path.join(commonDir, "_package.json"), "utf-8")
   )
 
   let selectedDependencies = {};
   for (let i = 0; i < selectedOptions.length; i++) {
     const so = selectedOptions[i];
-    selectedDependencies = { ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
+    selectedDependencies = { ...selectedDependencies, ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
   }
 
   pkg.dependencies = {
