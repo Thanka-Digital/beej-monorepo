@@ -112,7 +112,7 @@ export const main = async () => {
   const argTargetDir = args._[0];
   const argComponent = args.component || args.c;
   const argState = args.state || args.s;
-  const argApi = args.api || args.a;
+  // const argApi = args.api || args.a;
   const isTest = args.test || args.t;
 
   const environment = process.env.NODE_ENV || "production";
@@ -134,7 +134,7 @@ export const main = async () => {
     | "packageName"
     | "component"
     | "state"
-    | "api"
+    // | "api"
     | "overwrite"
   >;
   try {
@@ -229,22 +229,22 @@ export const main = async () => {
             };
           }),
         },
-        {
-          type: argApi && APIS.includes(argApi) ? null : "select",
-          name: "api",
-          message:
-            typeof argApi === "string" && !APIS.includes(argApi)
-              ? reset(`"${argApi}" isn't available. Please choose from below: `)
-              : reset("Select a API style:"),
-          initial: 0,
-          choices: apis.map((api) => {
-            const apiColor = api.color;
-            return {
-              title: apiColor(api.displayName || api.name),
-              value: api.name,
-            };
-          }),
-        },
+        // {
+        //   type: argApi && APIS.includes(argApi) ? null : "select",
+        //   name: "api",
+        //   message:
+        //     typeof argApi === "string" && !APIS.includes(argApi)
+        //       ? reset(`"${argApi}" isn't available. Please choose from below: `)
+        //       : reset("Select a API style:"),
+        //   initial: 0,
+        //   choices: apis.map((api) => {
+        //     const apiColor = api.color;
+        //     return {
+        //       title: apiColor(api.displayName || api.name),
+        //       value: api.name,
+        //     };
+        //   }),
+        // },
       ],
       {
         onCancel: () => {
@@ -258,11 +258,11 @@ export const main = async () => {
   }
 
   // get the prompts result
-  const { packageName, component, state, api, overwrite } = result;
+  const { packageName, component, state, overwrite } = result;
 
   const templateComponentVariant = component || argComponent;
   const templateStateVariant = state || argState;
-  const templateApiVariant = api || argApi;
+  // const templateApiVariant = api || argApi;
 
   const root = path.join(cwd, targetDir);
 
