@@ -6,6 +6,7 @@ import minimist from "minimist";
 import { fileURLToPath } from "url";
 import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./utils/pkgDependency";
 import { testVersion } from "./utils/testVersion";
+import { contentRemoveByLines } from "./utils/contentRemoveByLines";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
@@ -260,7 +261,7 @@ export const main = async () => {
   // get the prompts result
   const { packageName, component, state, overwrite } = result;
 
-  const templateComponentVariant = component || argComponent;
+  const templateComponentVariant: string = component || argComponent;
   const templateStateVariant = state || argState;
   // const templateApiVariant = api || argApi;
 
@@ -319,6 +320,7 @@ export const main = async () => {
     fileURLToPath(import.meta.url),
     `${environment === "production" ? "../../../main" : "../../main"}`,
   );
+  const filesToIgnore = ["App.test.tsx", templateComponentVariant !== "tailwindcss" ? "tailwind.css" : ""];
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
     (f) => f !== "_package.json" && f !== "App.tsx",
@@ -326,7 +328,7 @@ export const main = async () => {
     write({
       file,
       templateDir: commonDir,
-      filesToIgnore: ["App.test.tsx"],
+      filesToIgnore: filesToIgnore,
       foldersToIgnore: isTest ? ["libraries", "node_modules"] : ["__test__", "libraries", "node_modules"],
     });
   }
@@ -351,6 +353,11 @@ export const main = async () => {
     // } else {
     //   write({ file, templateDir: componentDir });
     // }
+  }
+
+  if (templateComponentVariant !== "tailwindcss") {
+    write({ file: "main.tsx", content: contentRemoveByLines(commonDir + "/src/main.tsx", [3]), templateDir: commonDir + "/src", targetFolder: "src" });
+    write({ file: "vite.config.ts", content: contentRemoveByLines(commonDir + "/vite.config.ts", [3, 10]) });
   }
 
   // Scaffold the files according to the component library selected
@@ -502,10 +509,10 @@ function copyDir(srcDir: string, destDir: string, ignoreList?: string[]) {
       if (ignoreList.includes(destFileName)) {
         console.log(`  ${red("Ignoring")} ${destFileName}`);
       } else {
-        copy(srcFile, destFile, destFileName)
+        copy(srcFile, destFile, destFileName, ignoreList)
       }
     } else {
-      copy(srcFile, destFile, destFileName);
+      copy(srcFile, destFile, destFileName, ignoreList);
     }
   }
 }
