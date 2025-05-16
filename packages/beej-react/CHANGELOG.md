@@ -1,5 +1,12 @@
 # @beej/react
 
+## 0.1.1
+
+### Patch Changes
+
+- 9fac309: fix: fix issue #27 by updating App.tsx as per selection
+- fe6fb2d: Fix: fix tailwind error on non-tailwind stack selection
+
 ## 0.1.0
 
 ### Minor Changes
