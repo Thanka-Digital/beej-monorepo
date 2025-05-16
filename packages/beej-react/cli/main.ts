@@ -1,96 +1,28 @@
 import path from "path";
 import fs from "node:fs";
 import prompts from "prompts";
-import colors from "picocolors";
+import { cyanBright, red, reset, blueBright } from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
 import { testVersion } from "./utils/testVersion";
 import { contentRemoveByLines } from "./utils/file_update";
 import { writeFileToDest } from "./utils/file_utilities";
-import { isValidPackageName, pkgInfoFromUserAgent, providerUpdate, toValidPackageName, updatePkgJsonDeps } from "./utils/package_utilities";
-
-const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
-  colors;
-
-type Configs = {
-  component?: "tailwind" | "chakra" | "mantine";
-  state?: "context" | "redux" | "jotai";
-  api?: "fetch" | "rtk" | "tanstack";
-};
-type ColorFunc = (str: string | number) => string;
-
-type ComponentVariant = {
-  name: string;
-  displayName: string;
-  color: ColorFunc;
-};
-type StateVariant = {
-  name: string;
-  displayName: string;
-  color: ColorFunc;
-};
-type ApiVariant = {
-  name: string;
-  displayName: string;
-  color: ColorFunc;
-};
-
-const components: ComponentVariant[] = [
-  {
-    name: "tailwindcss",
-    displayName: "Tailwind",
-    color: cyanBright,
-  },
-  {
-    name: "chakra",
-    displayName: "Chakra UI",
-    color: greenBright,
-  },
-  {
-    name: "mantine",
-    displayName: "Mantine",
-    color: yellowBright,
-  },
-];
-const states: StateVariant[] = [
-  {
-    name: "context",
-    displayName: "Context API",
-    color: cyanBright,
-  },
-  {
-    name: "redux",
-    displayName: "Redux",
-    color: greenBright,
-  },
-  {
-    name: "zustand",
-    displayName: "Zustand",
-    color: blueBright,
-  },
-  {
-    name: "jotai",
-    displayName: "Jotai",
-    color: yellowBright,
-  }
-];
-const apis: ApiVariant[] = [
-  {
-    name: "fetch",
-    displayName: "Fetch",
-    color: cyanBright,
-  },
-  // {
-  //   name: "rtk",
-  //   displayName: "Redux Toolkit",
-  //   color: greenBright,
-  // },
-  // {
-  //   name: "tanstack",
-  //   displayName: "Tanstack",
-  //   color: yellowBright,
-  // },
-];
+import {
+  isValidPackageName,
+  pkgInfoFromUserAgent,
+  providerUpdate,
+  toValidPackageName,
+  updatePkgJsonDeps,
+} from "./utils/package_utilities";
+import {
+  components,
+  COMPONENTS,
+  ComponentVariantString,
+  Configs,
+  states,
+  STATES,
+  StateVariantString,
+} from "./constant";
 
 // Agruments parsed with minimist
 const args = minimist<Configs>(process.argv.slice(2), {
@@ -100,12 +32,7 @@ const args = minimist<Configs>(process.argv.slice(2), {
 });
 const cwd = process.cwd();
 
-const COMPONENTS = ["chakra", "mantine", "tailwindcss"];
-const STATES = ["context", "jotai", "redux", "zustand"];
-const APIS = ["fetch", "rtk", "tanstack"];
-
 const defaultTargetDir = "beej-app";
-
 
 export const main = async () => {
   const argTargetDir = args._[0];
@@ -198,7 +125,7 @@ export const main = async () => {
             typeof argComponent === "string" &&
               !COMPONENTS.includes(argComponent)
               ? reset(
-                `"${argComponent}" isn't available. Please choose from below: `,
+                `"${argComponent}" isn't available. Please choose from below: `
               )
               : reset("Select a component style:"),
           initial: 0,
@@ -216,7 +143,7 @@ export const main = async () => {
           message:
             typeof argState === "string" && !STATES.includes(argState)
               ? reset(
-                `"${argState}" isn't available. Please choose from below: `,
+                `"${argState}" isn't available. Please choose from below: `
               )
               : reset("Select a state preference:"),
           initial: 0,
@@ -249,7 +176,7 @@ export const main = async () => {
         onCancel: () => {
           throw new Error(red("✖") + " Operation cancelled");
         },
-      },
+      }
     );
   } catch (error: unknown) {
     console.error(red((error as Error).message));
@@ -259,8 +186,9 @@ export const main = async () => {
   // get the prompts result
   const { packageName, component, state, overwrite } = result;
 
-  const templateComponentVariant: string = component || argComponent;
-  const templateStateVariant = state || argState;
+  const templateComponentVariant: ComponentVariantString =
+    component || argComponent;
+  const templateStateVariant: StateVariantString = state || argState;
   // const templateApiVariant = api || argApi;
 
   const root = path.join(cwd, targetDir);
@@ -280,82 +208,120 @@ export const main = async () => {
   console.log(`\n${blueBright(" Scaffolding common files")}`);
   const commonDir = path.resolve(
     fileURLToPath(import.meta.url),
-    `${environment === "production" ? "../../../main" : "../../main"}`,
+    `${environment === "production" ? "../../../main" : "../../main"}`
   );
-  const filesToIgnore = ["App.test.tsx", templateComponentVariant !== "tailwindcss" ? "tailwind.css" : ""];
+  const filesToIgnore = [
+    "App.test.tsx",
+    templateComponentVariant !== "tailwindcss" ? "tailwind.css" : "",
+  ];
   const filesToCopyFromCommon = fs.readdirSync(commonDir);
   for (const file of filesToCopyFromCommon.filter(
-    (f) => f !== "_package.json" && f !== "App.tsx",
+    (f) => f !== "_package.json" && f !== "App.tsx"
   )) {
     writeFileToDest({
       root,
       file,
       templateDir: commonDir,
       filesToIgnore: filesToIgnore,
-      foldersToIgnore: isTest ? ["libraries", "node_modules"] : ["__test__", "libraries", "node_modules"],
+      foldersToIgnore: isTest
+        ? ["libraries", "node_modules"]
+        : ["__test__", "libraries", "node_modules"],
     });
   }
 
   // Scaffold the files according to the component library selected
   console.log(
-    `\n${blueBright(` Scaffolding ${templateComponentVariant} files`)}`,
+    `\n${blueBright(` Scaffolding ${templateComponentVariant} files`)}`
   );
 
   const componentDir = path.resolve(
     fileURLToPath(import.meta.url),
-    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateComponentVariant}`,
+    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateComponentVariant}`
   );
   const filesToCopyFromComponentDir = fs.readdirSync(componentDir);
   for (const file of filesToCopyFromComponentDir.filter(
-    (f) => f !== "_package.json",
+    (f) => f !== "_package.json"
   )) {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
     //  TODO: add target folder src only if folder
-    writeFileToDest({ root, file, templateDir: componentDir, targetFolder: "src" });
+    writeFileToDest({
+      root,
+      file,
+      templateDir: componentDir,
+      targetFolder: "src",
+    });
     // } else {
     //   write({ file, templateDir: componentDir });
     // }
   }
 
   if (templateComponentVariant !== "tailwindcss") {
-    writeFileToDest({ root, file: "main.tsx", content: contentRemoveByLines(commonDir + "/src/main.tsx", [3]), templateDir: commonDir + "/src", targetFolder: "src" });
-    writeFileToDest({ root, file: "vite.config.ts", content: contentRemoveByLines(commonDir + "/vite.config.ts", [3, 10]) });
+    writeFileToDest({
+      root,
+      file: "main.tsx",
+      content: contentRemoveByLines(commonDir + "/src/main.tsx", [3]),
+      templateDir: commonDir + "/src",
+      targetFolder: "src",
+    });
+    writeFileToDest({
+      root,
+      file: "vite.config.ts",
+      content: contentRemoveByLines(commonDir + "/vite.config.ts", [3, 10]),
+    });
   }
 
   // Scaffold the files according to the component library selected
-  console.log(
-    `\n${blueBright(` Scaffolding ${templateStateVariant} files`)}`,
-  );
+  console.log(`\n${blueBright(` Scaffolding ${templateStateVariant} files`)}`);
 
   const stateDir = path.resolve(
     fileURLToPath(import.meta.url),
-    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateStateVariant}`,
-  )
+    `${environment === "production" ? "../../../main/libraries/" : "../../main/libraries/"}${templateStateVariant}`
+  );
   const filesToCopyFromStateDir = fs.readdirSync(stateDir);
   for (const file of filesToCopyFromStateDir) {
     writeFileToDest({ root, file, templateDir: stateDir, targetFolder: "src" });
   }
 
-  const newAppContent = providerUpdate(templateComponentVariant, templateStateVariant, commonDir + "/src/App.tsx");
-  writeFileToDest({ root, file: "App.tsx", content: newAppContent, templateDir: commonDir + "/src", targetFolder: "/src" })
+  const newAppContent = providerUpdate(
+    templateComponentVariant,
+    templateStateVariant,
+    commonDir + "/src/App.tsx"
+  );
+  writeFileToDest({
+    root,
+    file: "App.tsx",
+    content: newAppContent,
+    templateDir: commonDir + "/src",
+    targetFolder: "/src",
+  });
 
-  const pkg = updatePkgJsonDeps(commonDir, [component, state])
+  const pkg = updatePkgJsonDeps(commonDir, [component, state]);
   pkg.name = packageName || getProjectName();
 
-  writeFileToDest({ root, file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
+  writeFileToDest({
+    root,
+    file: "package.json",
+    content: JSON.stringify(pkg, null, 2) + "\n",
+  });
   if (isTest) {
-    writeFileToDest({ root, file: "App.tsx", content: testVersion(commonDir + "/src/App.test.tsx") + "\n", templateDir: commonDir + "/src", targetFolder: "src" });
+    writeFileToDest({
+      root,
+      file: "App.tsx",
+      content: testVersion(commonDir + "/src/App.test.tsx") + "\n",
+      templateDir: commonDir + "/src",
+      targetFolder: "src",
+    });
   }
 
   const cdProjectRelativePath = path.relative(cwd, root);
   console.log(
-    `\n${cyanBright("🎉  Successfully created project")} Get started by running:`,
+    `\n${cyanBright("🎉  Successfully created project")} Get started by running:`
   );
 
   if (cdProjectRelativePath) {
     console.log(
-      `   cd ${cdProjectRelativePath.includes(" ") ? `"${cdProjectRelativePath}"` : cdProjectRelativePath}`,
+      `   cd ${cdProjectRelativePath.includes(" ") ? `"${cdProjectRelativePath}"` : cdProjectRelativePath}`
     );
   }
 

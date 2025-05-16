@@ -2,10 +2,11 @@ import path from "path";
 import fs from "node:fs";
 import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./pkgDependency";
 import { updateFileByLine, wrapContentByContent } from "./file_update";
+import type { ComponentVariantString, StateVariantString } from "../constant";
 
 export function isValidPackageName(projectName: string) {
   return /^(?:@[a-z\d\-*~][a-z\d\-*._~]*\/)?[a-z\d\-~][a-z\d\-._~]*$/.test(
-    projectName,
+    projectName
   );
 }
 
@@ -28,31 +29,45 @@ export function pkgInfoFromUserAgent(userAgent: string | undefined) {
   };
 }
 
-export function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
+export function updatePkgJsonDeps(
+  commonDir: string,
+  selectedOptions: string[]
+): { [key: string]: string } {
   const pkg = JSON.parse(
     fs.readFileSync(path.join(commonDir, "_package.json"), "utf-8")
-  )
+  );
 
   let selectedDependencies = {};
   for (let i = 0; i < selectedOptions.length; i++) {
     const so = selectedOptions[i];
-    selectedDependencies = { ...selectedDependencies, ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
+    selectedDependencies = {
+      ...selectedDependencies,
+      ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST],
+    };
   }
 
   pkg.dependencies = {
     ...pkg.dependencies,
-    ...selectedDependencies
-  }
-  pkg.devDependencies = DEV_DEPENDENCY_LIST
+    ...selectedDependencies,
+  };
+  pkg.devDependencies = DEV_DEPENDENCY_LIST;
 
   return pkg;
 }
 
-export function providerUpdate(componentVariant: string, stateVariant: string, appPath: string) {
+export function providerUpdate(
+  componentVariant: ComponentVariantString,
+  stateVariant: StateVariantString,
+  appPath: string
+) {
   let appContent = fs.readFileSync(appPath, "utf-8");
 
   if (componentVariant !== "tailwindcss") {
-    appContent = updateFileByLine(appContent, 'import { Provider as ComponentProvider } from "@/provider/provider";', 0)
+    appContent = updateFileByLine(
+      appContent,
+      'import { Provider as ComponentProvider } from "@/provider/provider";',
+      0
+    );
     appContent = wrapContentByContent(appContent, "<AppRouter />", {
       startContent: "<ComponentProvider>",
       endContent: "</ComponentProvider>",
@@ -64,11 +79,15 @@ export function providerUpdate(componentVariant: string, stateVariant: string, a
     if (stateVariant === "jotai") {
       providerName = "JotaiProvider";
     }
-    appContent = updateFileByLine(appContent, `import ${providerName} from "@/provider/${providerName}";`, 0)
+    appContent = updateFileByLine(
+      appContent,
+      `import ${providerName} from "@/provider/${providerName}";`,
+      0
+    );
     appContent = wrapContentByContent(appContent, "<AppRouter />", {
       startContent: `<${providerName}>`,
       endContent: `</${providerName}>`,
-    })
+    });
   }
 
   return appContent;
