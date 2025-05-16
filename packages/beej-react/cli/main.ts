@@ -4,9 +4,10 @@ import prompts from "prompts";
 import colors from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
-import { DEPENDENCIES_LIST, DEV_DEPENDENCY_LIST } from "./utils/pkgDependency";
 import { testVersion } from "./utils/testVersion";
-import { contentRemoveByLines } from "./utils/contentRemoveByLines";
+import { contentRemoveByLines } from "./utils/file_update";
+import { writeFileToDest } from "./utils/file_utilities";
+import { isValidPackageName, pkgInfoFromUserAgent, providerUpdate, toValidPackageName, updatePkgJsonDeps } from "./utils/package_utilities";
 
 const { cyanBright, greenBright, red, reset, yellowBright, blueBright } =
   colors;
@@ -104,10 +105,7 @@ const STATES = ["context", "jotai", "redux", "zustand"];
 const APIS = ["fetch", "rtk", "tanstack"];
 
 const defaultTargetDir = "beej-app";
-const renameFiles: Record<string, string> = {
-  _gitignore: ".gitignore",
-  "_package.json": "package.json",
-};
+
 
 export const main = async () => {
   const argTargetDir = args._[0];
@@ -273,42 +271,6 @@ export const main = async () => {
     fs.mkdirSync(root, { recursive: true });
   }
 
-  const write = ({
-    file,
-    templateDir,
-    content,
-    filesToIgnore,
-    foldersToIgnore,
-    targetFolder,
-  }: {
-    file: string;
-    templateDir?: string;
-    content?: string;
-    filesToIgnore?: string[];
-    foldersToIgnore?: string[];
-    targetFolder?: string;
-  }) => {
-    const targetPath = path.join(
-      root,
-      targetFolder ?? "",
-      renameFiles[file] ?? file,
-    );
-    if (content) {
-      fs.writeFileSync(targetPath, content);
-    } else {
-      if (!templateDir) {
-        throw new Error("Need to pass templateDir");
-      }
-      copy(
-        path.join(templateDir, file),
-        targetPath,
-        file,
-        filesToIgnore,
-        foldersToIgnore,
-      );
-    }
-  };
-
   const pkgInfo = pkgInfoFromUserAgent(process.env.npm_config_user_agent);
   const pkgManager = pkgInfo ? pkgInfo.name : "pnpm";
 
@@ -325,7 +287,8 @@ export const main = async () => {
   for (const file of filesToCopyFromCommon.filter(
     (f) => f !== "_package.json" && f !== "App.tsx",
   )) {
-    write({
+    writeFileToDest({
+      root,
       file,
       templateDir: commonDir,
       filesToIgnore: filesToIgnore,
@@ -349,15 +312,15 @@ export const main = async () => {
     // const stat = fs.statSync(file)
     // if (stat.isDirectory()) {
     //  TODO: add target folder src only if folder
-    write({ file, templateDir: componentDir, targetFolder: "src" });
+    writeFileToDest({ root, file, templateDir: componentDir, targetFolder: "src" });
     // } else {
     //   write({ file, templateDir: componentDir });
     // }
   }
 
   if (templateComponentVariant !== "tailwindcss") {
-    write({ file: "main.tsx", content: contentRemoveByLines(commonDir + "/src/main.tsx", [3]), templateDir: commonDir + "/src", targetFolder: "src" });
-    write({ file: "vite.config.ts", content: contentRemoveByLines(commonDir + "/vite.config.ts", [3, 10]) });
+    writeFileToDest({ root, file: "main.tsx", content: contentRemoveByLines(commonDir + "/src/main.tsx", [3]), templateDir: commonDir + "/src", targetFolder: "src" });
+    writeFileToDest({ root, file: "vite.config.ts", content: contentRemoveByLines(commonDir + "/vite.config.ts", [3, 10]) });
   }
 
   // Scaffold the files according to the component library selected
@@ -371,15 +334,18 @@ export const main = async () => {
   )
   const filesToCopyFromStateDir = fs.readdirSync(stateDir);
   for (const file of filesToCopyFromStateDir) {
-    write({ file, templateDir: stateDir, targetFolder: "src" });
+    writeFileToDest({ root, file, templateDir: stateDir, targetFolder: "src" });
   }
+
+  const newAppContent = providerUpdate(templateComponentVariant, templateStateVariant, commonDir + "/src/App.tsx");
+  writeFileToDest({ root, file: "App.tsx", content: newAppContent, templateDir: commonDir + "/src", targetFolder: "/src" })
 
   const pkg = updatePkgJsonDeps(commonDir, [component, state])
   pkg.name = packageName || getProjectName();
 
-  write({ file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
+  writeFileToDest({ root, file: "package.json", content: JSON.stringify(pkg, null, 2) + "\n" });
   if (isTest) {
-    write({ file: "App.tsx", content: testVersion(commonDir + "/src/App.test.tsx") + "\n", templateDir: commonDir + "/src", targetFolder: "src" });
+    writeFileToDest({ root, file: "App.tsx", content: testVersion(commonDir + "/src/App.test.tsx") + "\n", templateDir: commonDir + "/src", targetFolder: "src" });
   }
 
   const cdProjectRelativePath = path.relative(cwd, root);
@@ -407,26 +373,6 @@ export const main = async () => {
   console.log();
 };
 
-function updatePkgJsonDeps(commonDir: string, selectedOptions: string[]): { [key: string]: string } {
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(commonDir, "_package.json"), "utf-8")
-  )
-
-  let selectedDependencies = {};
-  for (let i = 0; i < selectedOptions.length; i++) {
-    const so = selectedOptions[i];
-    selectedDependencies = { ...selectedDependencies, ...DEPENDENCIES_LIST[so as keyof typeof DEPENDENCIES_LIST] }
-  }
-
-  pkg.dependencies = {
-    ...pkg.dependencies,
-    ...selectedDependencies
-  }
-  pkg.devDependencies = DEV_DEPENDENCY_LIST
-
-  return pkg;
-}
-
 function formatTargetDir(targetDir: string | undefined) {
   return targetDir?.trim().replace(/\/+$/g, "");
 }
@@ -445,75 +391,6 @@ function emptyDir(dir: string) {
       continue;
     }
     fs.rmSync(path.resolve(dir, file), { recursive: true, force: true });
-  }
-}
-
-function isValidPackageName(projectName: string) {
-  return /^(?:@[a-z\d\-*~][a-z\d\-*._~]*\/)?[a-z\d\-~][a-z\d\-._~]*$/.test(
-    projectName,
-  );
-}
-
-function toValidPackageName(projectName: string) {
-  return projectName
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/^[._]/, "")
-    .replace(/[^a-z\d\-~]+/g, "-");
-}
-
-function pkgInfoFromUserAgent(userAgent: string | undefined) {
-  if (!userAgent) return undefined;
-  const pkgSpec = userAgent.split(" ")[0];
-  const pkgSpecArr = pkgSpec.split("/");
-  return {
-    name: pkgSpecArr[0],
-    version: pkgSpecArr[1],
-  };
-}
-
-function copy(
-  src: string,
-  dest: string,
-  fileDirName: string,
-  filesToIgnore?: string[],
-  foldersToIgnore?: string[],
-) {
-  const stat = fs.statSync(src);
-  if (stat.isDirectory()) {
-    if (foldersToIgnore) {
-      if (foldersToIgnore.includes(fileDirName)) {
-        console.log(`  ${red("Ignoring")} ${fileDirName}`);
-      } else {
-        copyDir(src, dest, filesToIgnore);
-      }
-    } else {
-      copyDir(src, dest, filesToIgnore);
-    }
-  } else {
-    console.log(`  ${cyanBright("Creating")} ${fileDirName}`);
-    fs.copyFileSync(src, dest);
-  }
-}
-
-function copyDir(srcDir: string, destDir: string, ignoreList?: string[]) {
-  fs.mkdirSync(destDir, { recursive: true });
-  for (const file of fs.readdirSync(srcDir)) {
-    const srcFile = path.resolve(srcDir, file);
-    const destFile = path.resolve(destDir, file);
-    const destFileSeparated = destFile.split(path.sep)
-    const destFileName = destFileSeparated[destFileSeparated.length - 1];
-
-    if (ignoreList) {
-      if (ignoreList.includes(destFileName)) {
-        console.log(`  ${red("Ignoring")} ${destFileName}`);
-      } else {
-        copy(srcFile, destFile, destFileName, ignoreList)
-      }
-    } else {
-      copy(srcFile, destFile, destFileName, ignoreList);
-    }
   }
 }
 
