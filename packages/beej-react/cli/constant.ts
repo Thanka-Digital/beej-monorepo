@@ -25,11 +25,11 @@ type ApiVariant = {
 
 const COMPONENT_LIBRARIES = {
   chakra: "chakra",
-  mantine: "maintine",
+  mantine: "mantine",
   tailwindcss: "tailwindcss",
 };
 const STATE_LIBRARIES = {
-  context: "context",
+  // context: "context",
   redux: "redux",
   jotai: "jotai",
   zustand: "zustand",
@@ -66,11 +66,11 @@ export const components: ComponentVariant[] = [
   },
 ];
 export const states: StateVariant[] = [
-  {
-    name: STATE_LIBRARIES.context,
-    displayName: "Context API",
-    color: cyanBright,
-  },
+  // {
+  //   name: STATE_LIBRARIES.context,
+  //   displayName: "Context API",
+  //   color: cyanBright,
+  // },
   {
     name: STATE_LIBRARIES.jotai,
     displayName: "Jotai",
