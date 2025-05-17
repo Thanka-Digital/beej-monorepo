@@ -1,4 +1,4 @@
-import AppTestRouter from "../__test__/AppRoute.test";
+import AppTestRouter from "./AppRoute.test";
 
 function App() {
   return (
