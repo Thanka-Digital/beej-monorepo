@@ -308,7 +308,7 @@ export const main = async () => {
     writeFileToDest({
       root,
       file: "App.tsx",
-      content: testVersion(commonDir + "/src/App.test.tsx") + "\n",
+      content: testVersion(commonDir + "/__test__/App.test.tsx") + "\n",
       templateDir: commonDir + "/src",
       targetFolder: "src",
     });

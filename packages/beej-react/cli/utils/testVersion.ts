@@ -1,6 +1,7 @@
-import { readFileSync } from "node:fs"
+import { contentRemoveByLines, updateFileByLine } from "./file_update";
 
 export function testVersion(testFilePath: string) {
-  const appTestCode = readFileSync(testFilePath, "utf-8");
+  let appTestCode = contentRemoveByLines(testFilePath, [0]);
+  appTestCode = updateFileByLine(appTestCode, 'import AppTestRouter from "../__test__/AppRoute.test";', 0)
   return appTestCode;
 }

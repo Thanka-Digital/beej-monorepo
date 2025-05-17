@@ -12,7 +12,9 @@
   "main": "index.js",
   "files": [
     "dist",
-    "main",
+    "main/libraries",
+    "main/public",
+    "main/src",
     "index.js"
   ],
   "engines": {
