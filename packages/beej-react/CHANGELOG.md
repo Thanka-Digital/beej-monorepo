@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.1.2
+
+### Patch Changes
+
+- b2701ba: fix: fix issue #32 by blacklisting test folder in .npmignore
+
 ## 0.1.1
 
 ### Patch Changes

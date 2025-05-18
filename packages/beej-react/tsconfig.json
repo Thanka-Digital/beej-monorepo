@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "ES2022",
     "module": "ES2020",
     "lib": ["es6", "DOM"],
@@ -13,5 +14,5 @@
     "declaration": true
   },
   "include": ["cli", "main"],
-  "exclude": ["node_modules", "dist", ".github", "App.test.tsx", "__test__"]
+  "exclude": ["node_modules", "dist", ".github", "__test__"]
 }

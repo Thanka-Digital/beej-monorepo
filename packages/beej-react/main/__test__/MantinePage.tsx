@@ -1,3 +1,4 @@
+import React from "react";
 import "@mantine/core/styles.css";
 
 import { Box, Button, MantineProvider } from "@mantine/core";

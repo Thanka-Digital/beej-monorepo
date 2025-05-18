@@ -1,3 +1,4 @@
+import React from "react";
 import Button from "../libraries/tailwindcss/components/ui/button";
 
 export default function TailwindPage() {
