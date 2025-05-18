@@ -1,14 +1,15 @@
+import React from "react";
+import { Box } from "@chakra-ui/react";
+
 import { Button } from "../libraries/chakra/components/ui/button";
 import { Provider as ChakraProvider } from "../libraries/chakra/provider/provider";
-import { Box } from "@chakra-ui/react";
 
 export default function ChakraPage() {
   return (
     <ChakraProvider>
+      <h1>Chakra UI</h1>
       <Box p={4}>
-        <Button variant="outline" colorPalette={"primary"}>
-          Click me
-        </Button>
+        <Button colorPalette={"brand"}>Click me</Button>
       </Box>
     </ChakraProvider>
   );

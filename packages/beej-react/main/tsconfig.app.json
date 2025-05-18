@@ -26,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "libraries", "test", "__test__/App.test.tsx"]
+  "include": ["src", "libraries", "test"]
 }

@@ -1,15 +1,11 @@
-import { createBrowserRouter, type RouteObject } from "react-router-dom";
-import LandingPage from "@/pages/public/LandingPage";
+import React from "react";
+import { RouteObject } from "react-router-dom";
+
 import ChakraPage from "./ChakraPage";
 import MantinePage from "./MantinePage";
 import TailwindPage from "./TailwindPage";
 
-// Routes in application
-const testRoutes: RouteObject[] = [
-  {
-    path: "/",
-    element: <LandingPage />,
-  },
+export const testRoutes: RouteObject[] = [
   {
     path: "/tests/*",
     children: [
@@ -28,5 +24,3 @@ const testRoutes: RouteObject[] = [
     ],
   },
 ];
-
-export const testRoute = createBrowserRouter(testRoutes);
