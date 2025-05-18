@@ -47,3 +47,19 @@ export const wrapContentByContent = (contentToChange: string, contentToLook: str
 
   return contentAfterUpdate;
 }
+
+export const contentRemoveByLineRange = (content: string, startLine: number, endLine: number) => {
+  let contentAfterRemoval = "";
+  const contentByLines = content.split(/\r\n|\r|\n/);
+
+  for (let index = 0; index < contentByLines.length; index++) {
+    if (index >= startLine && index <= endLine) {
+      continue;
+    }
+    contentAfterRemoval += contentByLines[index] + "\n";
+  }
+
+  console.log(contentAfterRemoval);
+
+  return contentAfterRemoval;
+}

@@ -13,6 +13,7 @@ export const DEPENDENCIES_LIST = {
   },
   "chakra": {
     "@chakra-ui/react": "^3.8.1",
+    "next-tehems": "^0.4.6",
   },
   "mantine": {
     "@mantine/core": "^7.17.0",
@@ -42,4 +43,5 @@ export const DEV_DEPENDENCY_LIST = {
   "typescript-eslint": "^8.22.0",
   "vite": "^6.1.0",
   "vite-tsconfig-paths": "^5.1.4",
+  "iconsax-reactjs": "^0.0.8",
 }
