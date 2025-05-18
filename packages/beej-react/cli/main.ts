@@ -4,7 +4,6 @@ import prompts from "prompts";
 import { cyanBright, red, reset, blueBright } from "picocolors";
 import minimist from "minimist";
 import { fileURLToPath } from "url";
-import { testVersion } from "./utils/testVersion";
 import { contentRemoveByLines } from "./utils/file_update";
 import { writeFileToDest } from "./utils/file_utilities";
 import {
@@ -27,7 +26,7 @@ import {
 // Agruments parsed with minimist
 const args = minimist<Configs>(process.argv.slice(2), {
   default: { help: false },
-  alias: { h: "help", c: "component", s: "state", a: "api", t: "test" },
+  alias: { h: "help", c: "component", s: "state", a: "api" },
   string: ["_"],
 });
 const cwd = process.cwd();
@@ -39,7 +38,6 @@ export const main = async () => {
   const argComponent = args.component || args.c;
   const argState = args.state || args.s;
   // const argApi = args.api || args.a;
-  const isTest = args.test || args.t;
 
   const environment = process.env.NODE_ENV || "production";
 
@@ -223,9 +221,7 @@ export const main = async () => {
       file,
       templateDir: commonDir,
       filesToIgnore: filesToIgnore,
-      foldersToIgnore: isTest
-        ? ["libraries", "node_modules"]
-        : ["__test__", "libraries", "node_modules"],
+      foldersToIgnore: ["__test__", "libraries", "node_modules"],
     });
   }
 
@@ -295,6 +291,13 @@ export const main = async () => {
     templateDir: commonDir + "/src",
     targetFolder: "/src",
   });
+  writeFileToDest({
+    root,
+    file: "routes.tsx",
+    content: contentRemoveByLines(commonDir + "/src/routes/routes.tsx", [2, 10]),
+    templateDir: commonDir + "/src/routes/routes.tsx",
+    targetFolder: "/src/routes",
+  });
 
   const pkg = updatePkgJsonDeps(commonDir, [component, state]);
   pkg.name = packageName || getProjectName();
@@ -304,15 +307,6 @@ export const main = async () => {
     file: "package.json",
     content: JSON.stringify(pkg, null, 2) + "\n",
   });
-  if (isTest) {
-    writeFileToDest({
-      root,
-      file: "App.tsx",
-      content: testVersion(commonDir + "/src/App.test.tsx") + "\n",
-      templateDir: commonDir + "/src",
-      targetFolder: "src",
-    });
-  }
 
   const cdProjectRelativePath = path.relative(cwd, root);
   console.log(
