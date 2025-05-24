@@ -36,12 +36,10 @@ jobs:
           node-version: 20
           cache: "pnpm"
       - name: Install dependencies
-        working-directory: apps/docs
         run: pnpm install
 
       - name: Build Docs
-        working-directory: apps/docs
-        run: npm run build
+        run: pnpm build --filter=@thanka-digital/beej-component --filter=@beej/docs
 
       - name: Upload artifcats
         uses: actions/upload-pages-artifact@v3
