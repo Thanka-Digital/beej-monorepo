@@ -4,8 +4,22 @@ on:
   push:
     branches: main
 
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   github-page:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,14 +36,18 @@ jobs:
           node-version: 20
           cache: "pnpm"
       - name: Install dependencies
+        working-directory: apps/docs
         run: pnpm install
 
       - name: Build Docs
         working-directory: apps/docs
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifcats
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: apps/docs/build
+          path: apps/docs/build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        id: deployment

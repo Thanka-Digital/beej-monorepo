@@ -12,7 +12,10 @@ title: Project Structure
     │   ├───custom (custom components)
     │   └───ui (global ui components)
     ├───features (state management feature files)
-    ├───hooks (custom hooks)
+    ├───utils (utility functions and variables)
+    │   └───hooks (custom hooks)
+    │   └───helpers (helper functions)
+    │   └───constants (contants)
     ├───pages
     │   └───public (public pages)
     │   └───private (private pages)
