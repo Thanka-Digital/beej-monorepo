@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.1.3
+
+### Patch Changes
+
+- d68ef16: Fix \_package.json not found error
+
 ## 0.1.2
 
 ### Patch Changes

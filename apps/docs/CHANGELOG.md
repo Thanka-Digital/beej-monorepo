@@ -1,5 +1,11 @@
 # @beej/docs
 
+## 0.0.4
+
+### Patch Changes
+
+- d68ef16: Fix \_package.json not found error
+
 ## 0.0.3
 
 ### Patch Changes
