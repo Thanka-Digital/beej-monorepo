@@ -1,14 +1,13 @@
 {
   "name": "@thanka-digital/beej-react",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.",
   "type": "module",
   "scripts": {
     "test": "unbuild --stub && set NODE_ENV=development && node index.js",
     "build": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build",
-    "dev": "cd main && vite"
+    "prepublishOnly": "npm run build"
   },
   "main": "index.js",
   "files": [
@@ -16,6 +15,15 @@
     "main/libraries",
     "main/public",
     "main/src",
+    "main/_package.json",
+    "main/.gitignore",
+    "main/eslint.config.js",
+    "main/index.html",
+    "main/README.md",
+    "main/tsconfig.app.json",
+    "main/tsconfig.json",
+    "main/tsconfig.node.json",
+    "main/vite.config.ts",
     "index.js"
   ],
   "engines": {
