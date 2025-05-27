@@ -2,7 +2,7 @@ name: Bump version of packages
 
 on:
   push:
-    branches: dev
+    branches: main
 
 jobs:
   changeset:
