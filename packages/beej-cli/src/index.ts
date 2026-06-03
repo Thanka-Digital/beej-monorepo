@@ -4,6 +4,13 @@ import { intro, outro, text, select, spinner, note } from "@clack/prompts";
 import color from "picocolors";
 import { Command } from "commander";
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { copyTemplateFiles } from "./utils/fs-ulits.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 async function main() {
   const program = new Command();
   program
@@ -32,10 +39,10 @@ async function main() {
   const framework = await select({
     message: "Select a framework",
     options: [
-      { value: "react", label: "React (vite)" },
-      { value: "nextjs", label: "Next.js" },
-      { value: "vue", label: "Vue" },
-      { value: "nuxt", label: "Nuxt" },
+      { value: "react-base", label: "React (vite)" },
+      { value: "nextjs-base", label: "Next.js" },
+      { value: "vue-base", label: "Vue" },
+      { value: "nuxt-base", label: "Nuxt" },
     ],
   });
 
@@ -87,10 +94,24 @@ async function main() {
   }
 
   // Scaffolding
+  const targetDir = path.resolve(process.cwd(), projectName as string);
+  const templateDir = path.resolve(
+    __dirname,
+    "../../templates",
+    framework as string,
+  );
+
   const s = spinner();
   s.start("Scaffolding your project...");
 
-  // TODO: change with actual scaffolding
+  try {
+    await copyTemplateFiles(templateDir, targetDir);
+    console.log(color.green("Base template files scaffolded successfully!"));
+  } catch (error: any) {
+    s.stop("Scaffolding failed.");
+    console.error(color.red(`\nError writing files: ${error.message}`));
+    process.exit(1);
+  }
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
   s.stop("Successfully created!");
