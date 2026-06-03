@@ -6,14 +6,22 @@
   "bin": {
     "beej": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "../templates"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --clean --minify",
     "dev": "tsup src/index.ts --format esm --watch"
   },
   "dependencies": {
+    "@babel/parser": "^7.29.7",
+    "@babel/types": "^7.29.7",
     "@clack/prompts": "^0.7.0",
+    "ast-types": "^0.14.2",
     "commander": "^12.0.0",
-    "picocolors": "^1.0.0"
+    "picocolors": "^1.0.0",
+    "recast": "^0.23.11"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",

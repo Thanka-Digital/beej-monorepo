@@ -6,7 +6,8 @@ import { Command } from "commander";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { copyTemplateFiles } from "./utils/fs-ulits.js";
+import { copyTemplateFiles, extendPackageJson } from "./utils/fs-utils.js";
+import { addImportDeclaration, wrapJsxElement } from "./utils/ast-utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -105,16 +106,56 @@ async function main() {
   s.start("Scaffolding your project...");
 
   try {
+    // * Copying the base framework template
     await copyTemplateFiles(templateDir, targetDir);
-    console.log(color.green("Base template files scaffolded successfully!"));
+    s.message("Base template files scaffolded successfully!");
+
+    const targetPackageJson = path.join(targetDir, "package.json");
+    const targetMainTsx = path.join(targetDir, "src", "main.tsx");
+
+    if (uiLibrary === "mantine") {
+      s.message("Configuring Mantine UI Library...");
+
+      await extendPackageJson(targetPackageJson, { maintine: "" });
+      await addImportDeclaration(targetMainTsx, "@maintine/core", [
+        "MaintineProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "MantineProvider");
+    } else if (uiLibrary === "chakra") {
+      s.message("Configuring Chakra UI Library...");
+
+      await extendPackageJson(targetPackageJson, {
+        "@chakra-ui/react": "",
+        "@emotion/react": "",
+      });
+      await addImportDeclaration(targetMainTsx, "@chakra-ui/react", [
+        "ChakraProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "ChakraProvider");
+    }
+
+    if (stateManagement === "jotai") {
+      s.message("Configuring Jotai state management...");
+
+      await extendPackageJson(targetPackageJson, { jotai: "^2.11.0" });
+      await addImportDeclaration(targetMainTsx, "jotai", ["Provider"]);
+      await wrapJsxElement(targetMainTsx, "App", "Provider");
+    } else if (stateManagement === "zustand") {
+      s.message("Configuring Zustand...");
+      await extendPackageJson(targetPackageJson, { zustand: "^4.5.0" });
+    }
+
+    if (apiLibrary === "axios") {
+      s.message("Configuring Axios API clients...");
+      await extendPackageJson(targetPackageJson, { axios: "^1.7.0" });
+    }
+
+    s.stop("Successfully created!");
   } catch (error: any) {
     s.stop("Scaffolding failed.");
     console.error(color.red(`\nError writing files: ${error.message}`));
     process.exit(1);
   }
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  s.stop("Successfully created!");
 
   note(
     `cd ${projectName}\npnpm install\npnpm dev`,
