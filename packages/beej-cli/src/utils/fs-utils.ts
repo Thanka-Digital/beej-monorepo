@@ -27,3 +27,23 @@ export async function copyTemplateFiles(
     }),
   );
 }
+
+/**
+ * Safely updates a target package.json file with new dependencies
+ * @param targetPath Path to the generated project package.json
+ * @param dependencies Key-value object mapping library names to versions
+ */
+export async function extendPackageJson(
+  targetPath: string,
+  dependencies: Record<string, string>,
+): Promise<void> {
+  const content = await fs.readFile(targetPath, "utf-8");
+  const pkg = JSON.parse(content);
+
+  pkg.dependencies = {
+    ...(pkg.dependencies || {}),
+    ...dependencies,
+  };
+
+  await fs.writeFile(targetPath, JSON.stringify(pkg, null, 2), "utf-8");
+}
