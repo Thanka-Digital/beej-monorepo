@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { DependencyConfig } from "./manifest.js";
 
 /**
  * Recursively copies a directory's contents to a destination in parallel.
@@ -31,19 +32,28 @@ export async function copyTemplateFiles(
 /**
  * Safely updates a target package.json file with new dependencies
  * @param targetPath Path to the generated project package.json
- * @param dependencies Key-value object mapping library names to versions
+ * @param config Key-value object mapping library names to versions
  */
 export async function extendPackageJson(
   targetPath: string,
-  dependencies: Record<string, string>,
+  config: DependencyConfig,
 ): Promise<void> {
   const content = await fs.readFile(targetPath, "utf-8");
   const pkg = JSON.parse(content);
 
-  pkg.dependencies = {
-    ...(pkg.dependencies || {}),
-    ...dependencies,
-  };
+  if (config.dependencies) {
+    pkg.dependencies = {
+      ...(pkg.dependencies || {}),
+      ...config.dependencies,
+    };
+  }
+
+  if (config.devDependencies) {
+    pkg.devDependencies = {
+      ...(pkg.devDependencies || {}),
+      ...config.devDependencies,
+    };
+  }
 
   await fs.writeFile(targetPath, JSON.stringify(pkg, null, 2), "utf-8");
 }

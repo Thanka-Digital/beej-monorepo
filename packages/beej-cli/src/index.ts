@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { copyTemplateFiles, extendPackageJson } from "./utils/fs-utils.js";
 import { addImportDeclaration, wrapJsxElement } from "./utils/ast-utils.js";
+import { PACKAGE_MANIFEST } from "./utils/manifest.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -116,7 +117,6 @@ async function main() {
     if (uiLibrary === "mantine") {
       s.message("Configuring Mantine UI Library...");
 
-      await extendPackageJson(targetPackageJson, { maintine: "" });
       await addImportDeclaration(targetMainTsx, "@maintine/core", [
         "MaintineProvider",
       ]);
@@ -124,31 +124,40 @@ async function main() {
     } else if (uiLibrary === "chakra") {
       s.message("Configuring Chakra UI Library...");
 
-      await extendPackageJson(targetPackageJson, {
-        "@chakra-ui/react": "",
-        "@emotion/react": "",
-      });
       await addImportDeclaration(targetMainTsx, "@chakra-ui/react", [
         "ChakraProvider",
       ]);
       await wrapJsxElement(targetMainTsx, "App", "ChakraProvider");
     }
+    await extendPackageJson(
+      targetPackageJson,
+      PACKAGE_MANIFEST[uiLibrary as keyof typeof PACKAGE_MANIFEST],
+    );
 
     if (stateManagement === "jotai") {
       s.message("Configuring Jotai state management...");
 
-      await extendPackageJson(targetPackageJson, { jotai: "^2.11.0" });
       await addImportDeclaration(targetMainTsx, "jotai", ["Provider"]);
       await wrapJsxElement(targetMainTsx, "App", "Provider");
     } else if (stateManagement === "zustand") {
       s.message("Configuring Zustand...");
-      await extendPackageJson(targetPackageJson, { zustand: "^4.5.0" });
+    }
+
+    if (stateManagement !== "none") {
+      await extendPackageJson(
+        targetPackageJson,
+        PACKAGE_MANIFEST[stateManagement as keyof typeof PACKAGE_MANIFEST],
+      );
     }
 
     if (apiLibrary === "axios") {
       s.message("Configuring Axios API clients...");
-      await extendPackageJson(targetPackageJson, { axios: "^1.7.0" });
     }
+
+    await extendPackageJson(
+      targetPackageJson,
+      PACKAGE_MANIFEST[apiLibrary as keyof typeof PACKAGE_MANIFEST],
+    );
 
     s.stop("Successfully created!");
   } catch (error: any) {
