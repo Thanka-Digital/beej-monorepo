@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --clean --minify",
-    "dev": "tsup src/index.ts --format esm --watch"
+    "dev": "tsup src/index.ts --format esm --watch",
+    "test": "vitest"
   },
   "dependencies": {
     "@babel/parser": "^7.29.7",
