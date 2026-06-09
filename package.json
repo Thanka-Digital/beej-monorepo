@@ -6,13 +6,22 @@
     "packages/*",
     "packages/templates/*"
   ],
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "core-js",
+      "core-js-pure",
+      "esbuild"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "test": "turbo test"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",

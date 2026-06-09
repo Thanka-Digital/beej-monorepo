@@ -38,7 +38,7 @@ async function main() {
     process.exit(0);
   }
 
-  const framework = await select({
+  const framework: string | symbol = await select({
     message: "Select a framework",
     options: [
       { value: "react-base", label: "React (vite)" },
@@ -53,7 +53,7 @@ async function main() {
     process.exit(0);
   }
 
-  const uiLibrary = await select({
+  const uiLibrary: string | symbol = await select({
     message: "Select UI library",
     options: [
       { value: "chakra", label: "Chakra UI" },
@@ -67,7 +67,7 @@ async function main() {
     process.exit(0);
   }
 
-  const stateManagement = await select({
+  const stateManagement: string | symbol = await select({
     message: "Select a state management library:",
     options: [
       { value: "none", label: "React Context" },
@@ -82,7 +82,7 @@ async function main() {
     process.exit(0);
   }
 
-  const apiLibrary = await select({
+  const apiLibrary: string | symbol = await select({
     message: "Select an API management library:",
     options: [
       { value: "axios", label: "Axios" },
@@ -129,10 +129,7 @@ async function main() {
       ]);
       await wrapJsxElement(targetMainTsx, "App", "ChakraProvider");
     }
-    await extendPackageJson(
-      targetPackageJson,
-      PACKAGE_MANIFEST[uiLibrary as keyof typeof PACKAGE_MANIFEST],
-    );
+    await extendPackageJson(targetPackageJson, PACKAGE_MANIFEST[uiLibrary]);
 
     if (stateManagement === "jotai") {
       s.message("Configuring Jotai state management...");
@@ -146,7 +143,7 @@ async function main() {
     if (stateManagement !== "none") {
       await extendPackageJson(
         targetPackageJson,
-        PACKAGE_MANIFEST[stateManagement as keyof typeof PACKAGE_MANIFEST],
+        PACKAGE_MANIFEST[stateManagement],
       );
     }
 
@@ -154,10 +151,7 @@ async function main() {
       s.message("Configuring Axios API clients...");
     }
 
-    await extendPackageJson(
-      targetPackageJson,
-      PACKAGE_MANIFEST[apiLibrary as keyof typeof PACKAGE_MANIFEST],
-    );
+    await extendPackageJson(targetPackageJson, PACKAGE_MANIFEST[apiLibrary]);
 
     s.stop("Successfully created!");
   } catch (error: any) {
