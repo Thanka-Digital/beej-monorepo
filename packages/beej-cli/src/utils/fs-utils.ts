@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DependencyConfig } from "./manifest.js";
+import { fileURLToPath } from "node:url";
 
 /**
  * Recursively copies a directory's contents to a destination in parallel.
@@ -56,4 +57,10 @@ export async function extendPackageJson(
   }
 
   await fs.writeFile(targetPath, JSON.stringify(pkg, null, 2), "utf-8");
+}
+
+export function getInternalTemplatePath(relativeTemplatePath: string): string {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+  return path.resolve(__dirname, "../templates", relativeTemplatePath);
 }

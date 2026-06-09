@@ -6,7 +6,11 @@ import { Command } from "commander";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { copyTemplateFiles, extendPackageJson } from "./utils/fs-utils.js";
+import {
+  copyTemplateFiles,
+  extendPackageJson,
+  getInternalTemplatePath,
+} from "./utils/fs-utils.js";
 import { addImportDeclaration, wrapJsxElement } from "./utils/ast-utils.js";
 import { PACKAGE_MANIFEST } from "./utils/manifest.js";
 
@@ -97,11 +101,7 @@ async function main() {
 
   // Scaffolding
   const targetDir = path.resolve(process.cwd(), projectName as string);
-  const templateDir = path.resolve(
-    __dirname,
-    "../../templates",
-    framework as string,
-  );
+  const templateDir = getInternalTemplatePath(framework);
 
   const s = spinner();
   s.start("Scaffolding your project...");
@@ -134,8 +134,14 @@ async function main() {
     if (stateManagement === "jotai") {
       s.message("Configuring Jotai state management...");
 
-      await addImportDeclaration(targetMainTsx, "jotai", ["Provider"]);
-      await wrapJsxElement(targetMainTsx, "App", "Provider");
+      const templateSource = getInternalTemplatePath("extensions/jotai");
+
+      await copyTemplateFiles(templateSource, targetDir);
+
+      await addImportDeclaration(targetMainTsx, "./providers/JotaiProvider", [
+        "JotaiProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "JotaiProvider");
     } else if (stateManagement === "zustand") {
       s.message("Configuring Zustand...");
     }
