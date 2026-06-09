@@ -13,6 +13,10 @@
     "skipLibCheck": true,
     "declaration": true
   },
-  "include": ["cli", "main"],
+  "include": [
+    "cli",
+    "main",
+    "../beej-cli/templates/extensions/mantine/postcss.config.mjs"
+  ],
   "exclude": ["node_modules", "dist", ".github", "__test__"]
 }

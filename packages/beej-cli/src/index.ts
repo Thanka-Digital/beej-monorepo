@@ -114,36 +114,30 @@ async function main() {
     const targetPackageJson = path.join(targetDir, "package.json");
     const targetMainTsx = path.join(targetDir, "src", "main.tsx");
 
-    if (uiLibrary === "mantine") {
-      s.message("Configuring Mantine UI Library...");
-
-      await addImportDeclaration(targetMainTsx, "@maintine/core", [
-        "MaintineProvider",
-      ]);
-      await wrapJsxElement(targetMainTsx, "App", "MantineProvider");
-    } else if (uiLibrary === "chakra") {
-      s.message("Configuring Chakra UI Library...");
-
-      await addImportDeclaration(targetMainTsx, "@chakra-ui/react", [
-        "ChakraProvider",
-      ]);
-      await wrapJsxElement(targetMainTsx, "App", "ChakraProvider");
+    // * Check for state managment option and apply files accordingly
+    if (stateManagement !== "none") {
+      await copyTemplateFiles(
+        getInternalTemplatePath(`extensions/${stateManagement}`),
+        targetDir,
+      );
     }
-    await extendPackageJson(targetPackageJson, PACKAGE_MANIFEST[uiLibrary]);
 
     if (stateManagement === "jotai") {
       s.message("Configuring Jotai state management...");
 
-      const templateSource = getInternalTemplatePath("extensions/jotai");
-
-      await copyTemplateFiles(templateSource, targetDir);
-
-      await addImportDeclaration(targetMainTsx, "./providers/JotaiProvider", [
+      await addImportDeclaration(targetMainTsx, "./provider/JotaiProvider", [
         "JotaiProvider",
       ]);
       await wrapJsxElement(targetMainTsx, "App", "JotaiProvider");
     } else if (stateManagement === "zustand") {
       s.message("Configuring Zustand...");
+    } else if (stateManagement === "redux") {
+      s.message("Configuring Zustand...");
+
+      await addImportDeclaration(targetMainTsx, "./provider/ReduxProvider", [
+        "ReduxProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "ReduxProvider");
     }
 
     if (stateManagement !== "none") {
@@ -152,6 +146,28 @@ async function main() {
         PACKAGE_MANIFEST[stateManagement],
       );
     }
+
+    // * Copying files as per the UI library option selection
+    await copyTemplateFiles(
+      getInternalTemplatePath(`extensions/${uiLibrary}`),
+      targetDir,
+    );
+    if (uiLibrary === "mantine") {
+      s.message("Configuring Mantine UI Library...");
+
+      await addImportDeclaration(targetMainTsx, "./provider/MantineProvider", [
+        "MProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "MProvider");
+    } else if (uiLibrary === "chakra") {
+      s.message("Configuring Chakra UI Library...");
+
+      await addImportDeclaration(targetMainTsx, "./provider/ChakraProvider", [
+        "CProvider",
+      ]);
+      await wrapJsxElement(targetMainTsx, "App", "CProvider");
+    }
+    await extendPackageJson(targetPackageJson, PACKAGE_MANIFEST[uiLibrary]);
 
     if (apiLibrary === "axios") {
       s.message("Configuring Axios API clients...");

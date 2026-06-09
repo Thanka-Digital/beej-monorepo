@@ -7,7 +7,7 @@ import {
 } from "../components/ui/color-mode";
 import customExtendedSystem from "../theme/theme";
 
-export function Provider(props: ColorModeProviderProps) {
+export function CProvider(props: ColorModeProviderProps) {
   return (
     <ChakraProvider value={customExtendedSystem}>
       <ColorModeProvider {...props} />

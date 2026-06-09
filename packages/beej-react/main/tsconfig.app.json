@@ -26,5 +26,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "libraries", "test"]
+  "include": [
+    "src",
+    "libraries",
+    "test",
+    "../../beej-cli/templates/extensions/mantine/postcss.config.mjs",
+    "../../beej-cli/templates/extensions/zustand/src/features/CounterState.tsx"
+  ]
 }
