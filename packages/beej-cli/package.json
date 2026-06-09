@@ -11,8 +11,8 @@
     "../templates"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --clean --minify",
-    "dev": "tsup src/index.ts --format esm --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "test": "vitest run"
   },
   "dependencies": {
