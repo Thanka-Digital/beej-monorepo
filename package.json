@@ -6,15 +6,6 @@
     "packages/*",
     "packages/templates/*"
   ],
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@swc/core",
-      "@tailwindcss/oxide",
-      "core-js",
-      "core-js-pure",
-      "esbuild"
-    ]
-  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",

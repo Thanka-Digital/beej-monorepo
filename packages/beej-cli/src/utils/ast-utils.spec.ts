@@ -1,24 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Volume } from "memfs";
+import { addImportDeclaration, wrapJsxElement } from "./ast-utils.js";
 
-const vol = new Volume();
-
-vi.mock("node:fs", () => {
+const memoryStorage = vi.hoisted(() => {
   return {
-    promises: vol.promises,
-    default: vol,
+    vol: new Volume(),
   };
 });
 
-import { addImportDeclaration, wrapJsxElement } from "./ast-utils.js";
+vi.mock("node:fs", () => {
+  return {
+    promises: memoryStorage.vol.promises,
+    default: memoryStorage.vol,
+  };
+});
 
 describe("AST Utilities Integration Pipeline", () => {
   const mockPath = "/test-beej/src/main.tsx";
 
   beforeEach(() => {
-    vol.reset();
+    memoryStorage.vol.reset();
 
-    vol.fromJSON({
+    memoryStorage.vol.fromJSON({
       [mockPath]: `import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
@@ -35,7 +38,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     await addImportDeclaration(mockPath, "jotai", ["Provider"]);
     await wrapJsxElement(mockPath, "App", "Provider");
 
-    const generateCode = await vol.promises.readFile(mockPath, "utf-8");
+    const generateCode = await memoryStorage.vol.promises.readFile(
+      mockPath,
+      "utf-8",
+    );
 
     expect(generateCode).toMatchInlineSnapshot(`
       "import { Provider } from \\"jotai\\";
