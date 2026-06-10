@@ -63,13 +63,44 @@ jobs:
             echo "SUMMARY=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
           fi
 
-      - name: Changeset Action
-        uses: generates/changeset-action@v3.0.0
-        with:
-          token: ${{ secrets.GH_PAT }}
-          type: ${{ env.LABEL_TYPE }}
-          summary: ${{ env.SUMMARY }}
+      - name: Generate Native Changeset File
+        run: |
+          mkdir -p .changeset
+          FILENAME=".changeset/automation-$(date +%s).md"
+
+          echo "---" > $FILENAME
+
+          # Find unique package subdirectories that have modified files
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            CHANGED_PKGS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '^packages/' | cut -d'/' -f2 | sort -u)
+          else
+            CHANGED_PKGS=$(git diff --name-only HEAD~1...HEAD | grep '^packages/' | cut -d'/' -f2 | sort -u)
+          fi
+
+          if [ -z "$CHANGED_PKGS" ]; then
+            # Fallback to core CLI if files were changed globally outside of packages folder
+            echo '"@thanka-digital/beej-cli": "${{ env.LABEL_TYPE }}"' >> $FILENAME
+          else
+            for pkg in $CHANGED_PKGS; do
+              if [ -f "packages/$pkg/package.json" ]; then
+                # Read true scoped package name natively using jq
+                PKG_NAME=$(jq -r '.name' "packages/$pkg/package.json")
+                if [ ! -z "$PKG_NAME" ] && [ "$PKG_NAME" != "null" ]; then
+                  echo "\"$PKG_NAME\": \"${{ env.LABEL_TYPE }}\"" >> $FILENAME
+                fi
+              fi
+            done
+          fi
+
+          echo "---" >> $FILENAME
+          echo "" >> $FILENAME
+          echo "${{ env.SUMMARY }}" >> $FILENAME
+
+          echo "✅ Flawlessly generated changeset file:"
+          cat $FILENAME
+
       - name: Commit Changes
-        uses: generates/commit-action@v1.0.2
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          token: ${{ secrets.GH_PAT }}
+          commit_message: "chore: auto-generate changeset version metadata [skip ci]"
+          file_pattern: ".changeset/*.md"
