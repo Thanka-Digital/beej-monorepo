@@ -1,100 +1,20 @@
 {
   "name": "@thanka-digital/beej-react",
-  "version": "0.1.3",
-  "description": "A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.",
+  "version": "0.2.0",
+  "private": true,
   "type": "module",
-  "scripts": {
-    "test": "unbuild --stub && set NODE_ENV=development && node index.js",
-    "build": "unbuild",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./templates/*": "./templates/*"
   },
-  "main": "index.js",
-  "files": [
-    "dist",
-    "main/libraries",
-    "main/public",
-    "main/src",
-    "main/_package.json",
-    "main/.gitignore",
-    "main/eslint.config.js",
-    "main/index.html",
-    "main/README.md",
-    "main/tsconfig.app.json",
-    "main/tsconfig.json",
-    "main/tsconfig.node.json",
-    "main/vite.config.ts",
-    "index.js"
-  ],
-  "engines": {
-    "node": "^18.0.0 || >=20.0.0"
-  },
-  "bin": {
-    "beej": "index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Thanka-Digital/beej.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Thanka-Digital/beej/issues"
-  },
-  "homepage": "https://github.com/Thanka-Digital/beej#readme",
-  "keywords": [
-    "starter",
-    "template",
-    "tailwind",
-    "chakra",
-    "mantine",
-    "redux",
-    "jotai",
-    "ui",
-    "react",
-    "next"
-  ],
-  "author": "alsongarbuja",
-  "license": "MIT",
   "devDependencies": {
-    "@chakra-ui/react": "^3.17.0",
-    "@eslint/js": "^9.20.0",
-    "@floating-ui/react": "^0.27.8",
-    "@mantine/core": "^8.0.0",
-    "@mantine/hooks": "^8.0.0",
-    "@reduxjs/toolkit": "^2.8.1",
-    "@tailwindcss/vite": "^4.1.6",
-    "@types/minimist": "^1.2.5",
-    "@types/node": "^22.8.1",
-    "@types/prompts": "^2.4.9",
-    "@types/react": "19.0.8",
-    "@types/react-dom": "19.0.3",
-    "@vitejs/plugin-react-swc": "^3.9.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.0.0",
-    "eslint": "^9.20.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^15.15.0",
-    "iconsax-reactjs": "^0.0.8",
-    "jotai": "^2.12.4",
-    "minimist": "^1.2.8",
-    "next-themes": "^0.4.6",
-    "picocolors": "^1.1.1",
-    "prompts": "^2.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-redux": "^9.2.0",
-    "react-router-dom": "^7.6.0",
-    "sonner": "^2.0.3",
-    "tailwind-merge": "^3.3.0",
-    "tailwindcss": "^4.0.9",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.0",
-    "unbuild": "^2.0.0",
-    "vite": "^6.4.1",
-    "vite-tsconfig-paths": "^5.1.4",
-    "zustand": "^5.0.4"
-  },
-  "publishConfig": {
-    "access": "public"
+    "jotai": "^2.11.0",
+    "zustand": "^4.5.0",
+    "@chakra-ui/react": "^3.0.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.0.0"
   }
 }

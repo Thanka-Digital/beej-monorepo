@@ -16,7 +16,11 @@
   "include": [
     "cli",
     "main",
-    "../beej-cli/templates/extensions/mantine/postcss.config.mjs"
+    "templates/extensions/mantine/postcss.config.mjs",
+    "templates/base/tsconfig.app.json",
+    "templates/base/tsconfig.json",
+    "templates/base/tsconfig.node.json",
+    "templates/base/eslint.config.js"
   ],
   "exclude": ["node_modules", "dist", ".github", "__test__"]
 }
