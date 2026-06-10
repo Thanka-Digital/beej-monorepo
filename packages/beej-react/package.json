@@ -9,12 +9,17 @@
     "./templates/*": "./templates/*"
   },
   "devDependencies": {
+    "@chakra-ui/react": "^3.0.0",
+    "@mantine/core": "^9.3.1",
+    "@reduxjs/toolkit": "^2.12.0",
+    "@types/react": "^19.0.0",
+    "clsx": "^2.1.1",
+    "jotai": "^2.11.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "jotai": "^2.11.0",
-    "zustand": "^4.5.0",
-    "@chakra-ui/react": "^3.0.0",
-    "@types/react": "^19.0.0",
-    "typescript": "^5.0.0"
+    "react-redux": "^9.3.0",
+    "tailwind-merge": "^3.6.0",
+    "typescript": "^5.0.0",
+    "zustand": "^4.5.0"
   }
 }
