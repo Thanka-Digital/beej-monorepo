@@ -1,6 +1,6 @@
 {
   "name": "@thanka-digital/beej-cli",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
@@ -16,6 +16,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@thanka-digital/beej-react": "workspace:*",
     "@babel/parser": "^7.29.7",
     "@babel/types": "^7.29.7",
     "@clack/prompts": "^0.7.0",

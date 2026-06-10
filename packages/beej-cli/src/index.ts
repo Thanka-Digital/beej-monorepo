@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import {
   copyTemplateFiles,
   extendPackageJson,
-  getInternalTemplatePath,
+  getPackageTemplatePath,
 } from "./utils/fs-utils.js";
 import { addImportDeclaration, wrapJsxElement } from "./utils/ast-utils.js";
 import { PACKAGE_MANIFEST } from "./utils/manifest.js";
@@ -17,7 +17,11 @@ import { PACKAGE_MANIFEST } from "./utils/manifest.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+/**
+ * Main function to start the cli
+ */
 async function main() {
+  // Creating a command program for terminal result parsing
   const program = new Command();
   program
     .name("beej")
@@ -29,9 +33,11 @@ async function main() {
   console.log("");
   intro(color.bgCyan(color.black("  beej-cli  ")));
 
+  // Prompting user for project name
   const projectName = await text({
     message: "Project Name",
     placeholder: "beej-app",
+    defaultValue: "beej-app",
     validate(value) {
       if (/[A-Z]/.test(value)) return "Project name must be lowercase.";
     },
@@ -42,13 +48,14 @@ async function main() {
     process.exit(0);
   }
 
+  // Selecting framework
   const framework: string | symbol = await select({
     message: "Select a framework",
     options: [
-      { value: "react-base", label: "React (vite)" },
-      { value: "nextjs-base", label: "Next.js" },
-      { value: "vue-base", label: "Vue" },
-      { value: "nuxt-base", label: "Nuxt" },
+      { value: "@thanka-digital/beej-react", label: "React (vite)" },
+      { value: "@thanka-digital/beej-nextjs", label: "Next.js" },
+      { value: "@thanka-digital/beej-vue", label: "Vue" },
+      { value: "@thanka-digital/beej-nuxt", label: "Nuxt" },
     ],
   });
 
@@ -57,6 +64,7 @@ async function main() {
     process.exit(0);
   }
 
+  // Selecting the UI library
   const uiLibrary: string | symbol = await select({
     message: "Select UI library",
     options: [
@@ -71,6 +79,7 @@ async function main() {
     process.exit(0);
   }
 
+  // Selecting the state management library
   const stateManagement: string | symbol = await select({
     message: "Select a state management library:",
     options: [
@@ -86,6 +95,7 @@ async function main() {
     process.exit(0);
   }
 
+  // Selecting the API management library
   const apiLibrary: string | symbol = await select({
     message: "Select an API management library:",
     options: [
@@ -99,16 +109,16 @@ async function main() {
     process.exit(0);
   }
 
-  // Scaffolding
+  // * Scaffolding
   const targetDir = path.resolve(process.cwd(), projectName as string);
-  const templateDir = getInternalTemplatePath(framework);
+  const templateDir = getPackageTemplatePath(framework, "templates");
 
   const s = spinner();
   s.start("Scaffolding your project...");
 
   try {
     // * Copying the base framework template
-    await copyTemplateFiles(templateDir, targetDir);
+    await copyTemplateFiles(`${templateDir}/base`, targetDir);
     s.message("Base template files scaffolded successfully!");
 
     const targetPackageJson = path.join(targetDir, "package.json");
@@ -117,7 +127,7 @@ async function main() {
     // * Check for state managment option and apply files accordingly
     if (stateManagement !== "none") {
       await copyTemplateFiles(
-        getInternalTemplatePath(`extensions/${stateManagement}`),
+        `${templateDir}/extensions/${stateManagement}`,
         targetDir,
       );
     }
@@ -149,7 +159,7 @@ async function main() {
 
     // * Copying files as per the UI library option selection
     await copyTemplateFiles(
-      getInternalTemplatePath(`extensions/${uiLibrary}`),
+      `${templateDir}/extensions/${uiLibrary}`,
       targetDir,
     );
     if (uiLibrary === "mantine") {
@@ -178,7 +188,7 @@ async function main() {
     s.stop("Successfully created!");
   } catch (error: any) {
     s.stop("Scaffolding failed.");
-    console.error(color.red(`\nError writing files: ${error.message}`));
+    console.error(color.red(`\nError writing files: ${error.message}`), error);
     process.exit(1);
   }
 
@@ -191,6 +201,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error(color.red(`An unexpected error occurred: ${err.message}`));
+  console.error(color.red(`An unexpected error occurred: ${err.message}`), err);
   process.exit(1);
 });

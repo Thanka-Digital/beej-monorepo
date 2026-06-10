@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DependencyConfig } from "./manifest.js";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 /**
  * Recursively copies a directory's contents to a destination in parallel.
@@ -29,6 +30,25 @@ export async function copyTemplateFiles(
     }),
   );
 }
+
+// export async function copyWorkspaceBoilerplate(
+//   targetProjectDir: string,
+//   packageName: string,
+//   templateRelativePath: string,
+//   outputRelativePath: string,
+// ): Promise<void> {
+//   const packageEntryUrl = import.meta.resolve(packageName);
+
+//   const packageEntryPath = fileURLToPath(packageEntryUrl);
+//   const packageRootDir = path.dirname(path.dirname(packageEntryPath));
+
+//   const sourceAbsolutePath = path.join(packageRootDir, templateRelativePath);
+//   const targetAbsolutePath = path.join(targetProjectDir, outputRelativePath);
+
+//   const content = await fs.readFile(sourceAbsolutePath, "utf-8");
+//   await fs.mkdir(path.dirname(targetAbsolutePath), { recursive: true });
+//   await fs.writeFile(targetAbsolutePath, content, "utf-8");
+// }
 
 /**
  * Safely updates a target package.json file with new dependencies
@@ -63,4 +83,22 @@ export function getInternalTemplatePath(relativeTemplatePath: string): string {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
   return path.resolve(__dirname, "../templates", relativeTemplatePath);
+}
+
+/**
+ * Resovles the absolute path of the template file hosted inside an external
+ * workspace or npm package
+ *
+ * @param packageName The name of the scoped package e.g. "@thanka-digital/beej-react"
+ * @param relativeTemplatePath The relative path that is inside the package
+ */
+export function getPackageTemplatePath(
+  packageName: string,
+  relativeTemplatePath: string,
+) {
+  const require = createRequire(import.meta.url);
+  const packageEntryPath = require.resolve(packageName);
+  const packageRootDir = path.dirname(path.dirname(packageEntryPath));
+
+  return path.join(packageRootDir, relativeTemplatePath);
 }
