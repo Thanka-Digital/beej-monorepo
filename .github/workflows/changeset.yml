@@ -2,7 +2,7 @@ name: Create Changeset files
 
 on:
   pull_request:
-    branches: dev
+    branches: [dev]
     types: [labeled, synchronize]
   workflow_dispatch:
     inputs:
@@ -11,6 +11,7 @@ on:
           The SemVer type <major|minor|patch> to use manually by
           overriding the label type
         required: true
+        default: "patch"
       name:
         description: |
           The package name to use when running manually. If not specified, it will
@@ -47,11 +48,27 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Determine Label Type
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "LABEL_TYPE=${{ github.event.inputs.type }}" >> $GITHUB_ENV
+            echo "SUMMARY=${{ github.event.inputs.summary }}" >> $GITHUB_ENV
+          else
+            # Extracts first matching semver label from the PR event context
+            LABEL=$(jq --raw-output '.pull_request.labels[].name | select(. == "major" or . == "minor" or . == "patch")' "$GITHUB_EVENT_PATH" | head -n 1)
+            # Fallback to patch if no matching label is found yet
+            if [ -z "$LABEL" ]; then LABEL="patch"; fi
+            echo "LABEL_TYPE=$LABEL" >> $GITHUB_ENV
+            echo "SUMMARY=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          fi
+
       - name: Changeset Action
         uses: generates/changeset-action@v3.0.0
         with:
           token: ${{ secrets.GH_PAT }}
           type: ${{ env.LABEL_TYPE }}
+          summary: ${{ env.SUMMARY }}
       - name: Commit Changes
         uses: generates/commit-action@v1.0.2
         with:
