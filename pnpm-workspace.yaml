@@ -1,3 +1,9 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+allowBuilds:
+  "@swc/core": true
+  "@tailwindcss/oxide": true
+  core-js: true
+  core-js-pure: true
+  esbuild: true

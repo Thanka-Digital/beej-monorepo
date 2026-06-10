@@ -1,0 +1,35 @@
+{
+  "name": "@thanka-digital/beej-cli",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "beej": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "../templates"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@thanka-digital/beej-react": "workspace:*",
+    "@babel/parser": "^7.29.7",
+    "@babel/types": "^7.29.7",
+    "@clack/prompts": "^0.7.0",
+    "ast-types": "^0.14.2",
+    "commander": "^12.0.0",
+    "picocolors": "^1.0.0",
+    "recast": "^0.23.11"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "memfs": "^4.57.6",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.8"
+  }
+}
