@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.2.1
+
+### Patch Changes
+
+- ba3a1c9: Modularization of package to cli and templates
+
 ## 0.1.3
 
 ### Patch Changes
