@@ -1,7 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DependencyConfig } from "./manifest.js";
-import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 
 /**
@@ -20,7 +19,10 @@ export async function copyTemplateFiles(
   await Promise.all(
     entries.map(async (entry) => {
       const srcPath = path.join(src, entry.name);
-      const destPath = path.join(dest, entry.name);
+
+      const targetName =
+        entry.name === "_package.json" ? "package.json" : entry.name;
+      const destPath = path.join(dest, targetName);
 
       if (entry.isDirectory()) {
         await copyTemplateFiles(srcPath, destPath);
@@ -30,25 +32,6 @@ export async function copyTemplateFiles(
     }),
   );
 }
-
-// export async function copyWorkspaceBoilerplate(
-//   targetProjectDir: string,
-//   packageName: string,
-//   templateRelativePath: string,
-//   outputRelativePath: string,
-// ): Promise<void> {
-//   const packageEntryUrl = import.meta.resolve(packageName);
-
-//   const packageEntryPath = fileURLToPath(packageEntryUrl);
-//   const packageRootDir = path.dirname(path.dirname(packageEntryPath));
-
-//   const sourceAbsolutePath = path.join(packageRootDir, templateRelativePath);
-//   const targetAbsolutePath = path.join(targetProjectDir, outputRelativePath);
-
-//   const content = await fs.readFile(sourceAbsolutePath, "utf-8");
-//   await fs.mkdir(path.dirname(targetAbsolutePath), { recursive: true });
-//   await fs.writeFile(targetAbsolutePath, content, "utf-8");
-// }
 
 /**
  * Safely updates a target package.json file with new dependencies
@@ -77,12 +60,6 @@ export async function extendPackageJson(
   }
 
   await fs.writeFile(targetPath, JSON.stringify(pkg, null, 2), "utf-8");
-}
-
-export function getInternalTemplatePath(relativeTemplatePath: string): string {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-  return path.resolve(__dirname, "../templates", relativeTemplatePath);
 }
 
 /**
