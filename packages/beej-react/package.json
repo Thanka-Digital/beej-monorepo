@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "main": "./src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": "./src/index.js",
     "./templates/*": "./templates/*"
