@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.2.2
+
+### Patch Changes
+
+- 0d43b75: beej-react pkg update to hold template/extensions only
+
 ## 0.2.1
 
 ### Patch Changes
