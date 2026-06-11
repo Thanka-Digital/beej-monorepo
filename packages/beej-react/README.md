@@ -1,19 +1,10 @@
 # Beej React
 
-## Scaffold a project
+React based boilerplate and `template extension` for the related libraries for [`beej-cli`](https://npmjs.com/package/@thanka-digital/beej-cli)
 
-> [!Warning]
->
-> Required [Node.js](https://nodejs.org/en/) version 18+
+### Templates
 
-**With npm:**
+Following are the templates/extensions:
 
-```bash
-npx @thanka-digital/beej-react@latest
-```
-
-**With pnpm:**
-
-```bash
-pnpx @thanka-digital/beej-react@latest
-```
+- `Charka UI`
+- `Mantine`

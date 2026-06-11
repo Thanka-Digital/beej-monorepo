@@ -2,13 +2,30 @@
   "name": "@thanka-digital/beej-react",
   "version": "0.2.1",
   "private": true,
+  "description": "React template presets for the beej-cli engine",
   "type": "module",
-  "main": "./src/index.js",
-  "exports": {
-    ".": "./src/index.js",
-    "./templates/*": "./templates/*"
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "publishConfig": {
+    "access": "public"
   },
-  "devDependencies": {
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "dev": "tsup --watch",
+    "build": "tsup"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "peerDependencies": {
     "@chakra-ui/react": "^3.0.0",
     "@mantine/core": "^9.3.1",
     "@reduxjs/toolkit": "^2.12.0",
@@ -19,7 +36,10 @@
     "react-dom": "^19.0.0",
     "react-redux": "^9.3.0",
     "tailwind-merge": "^3.6.0",
-    "typescript": "^5.0.0",
     "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.0.0"
   }
 }
