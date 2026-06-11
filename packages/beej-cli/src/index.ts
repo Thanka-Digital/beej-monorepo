@@ -6,6 +6,7 @@ import { Command } from "commander";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { promises as fs } from "node:fs";
 import {
   copyTemplateFiles,
   extendPackageJson,
@@ -111,6 +112,58 @@ async function main() {
 
   // * Scaffolding
   const targetDir = path.resolve(process.cwd(), projectName as string);
+
+  let directoryExists = false;
+  try {
+    await fs.access(targetDir);
+    directoryExists = true;
+  } catch {
+    directoryExists = false;
+  }
+
+  if (directoryExists) {
+    const existingFolderAction = await select({
+      message: `Directory "${projectName}" already exists. How would you like to proceed?`,
+      options: [
+        {
+          value: "overwrite",
+          label:
+            "Overwrite (Delete existing folder and start completely fresh)",
+        },
+        {
+          value: "merge",
+          label: "Merge (Add template into the folder as it is)",
+        },
+        {
+          value: "cancel",
+          label: "Cancel",
+        },
+      ],
+    });
+
+    if (
+      existingFolderAction === "cancel" ||
+      typeof existingFolderAction === "symbol"
+    ) {
+      outro(color.red("❌ Operation cancelled."));
+      process.exit(0);
+    }
+
+    if (existingFolderAction === "overwrite") {
+      const cleanSpinner = spinner();
+      cleanSpinner.start("Clearing existing directory structure...");
+
+      try {
+        await fs.rm(targetDir, { recursive: true, force: true });
+        cleanSpinner.stop("Existing directory cleared successfully!");
+      } catch (err: any) {
+        cleanSpinner.stop("Failed to clear directory.");
+        console.error(color.red(`Error removing folder: ${err.message}`));
+        process.exit(1);
+      }
+    }
+  }
+
   const templateDir = getPackageTemplatePath(framework, "templates");
 
   const s = spinner();
