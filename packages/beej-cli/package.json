@@ -3,6 +3,10 @@
   "version": "0.2.3",
   "type": "module",
   "main": "./dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "bin": {
     "beej": "./dist/index.js"
   },
