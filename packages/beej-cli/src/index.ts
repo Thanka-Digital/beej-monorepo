@@ -175,7 +175,7 @@ async function main() {
     s.message("Base template files scaffolded successfully!");
 
     const targetPackageJson = path.join(targetDir, "package.json");
-    const targetMainTsx = path.join(targetDir, "src", "main.tsx");
+    const targetAppTsx = path.join(targetDir, "src", "App.tsx");
 
     // * Check for state managment option and apply files accordingly
     if (stateManagement !== "none") {
@@ -188,19 +188,19 @@ async function main() {
     if (stateManagement === "jotai") {
       s.message("Configuring Jotai state management...");
 
-      await addImportDeclaration(targetMainTsx, "./provider/JotaiProvider", [
+      await addImportDeclaration(targetAppTsx, "./provider/JotaiProvider", [
         "JotaiProvider",
       ]);
-      await wrapJsxElement(targetMainTsx, "App", "JotaiProvider");
+      await wrapJsxElement(targetAppTsx, "h1", "JotaiProvider");
     } else if (stateManagement === "zustand") {
       s.message("Configuring Zustand...");
     } else if (stateManagement === "redux") {
       s.message("Configuring Zustand...");
 
-      await addImportDeclaration(targetMainTsx, "./provider/ReduxProvider", [
+      await addImportDeclaration(targetAppTsx, "./provider/ReduxProvider", [
         "ReduxProvider",
       ]);
-      await wrapJsxElement(targetMainTsx, "App", "ReduxProvider");
+      await wrapJsxElement(targetAppTsx, "h1", "ReduxProvider");
     }
 
     if (stateManagement !== "none") {
@@ -218,17 +218,17 @@ async function main() {
     if (uiLibrary === "mantine") {
       s.message("Configuring Mantine UI Library...");
 
-      await addImportDeclaration(targetMainTsx, "./provider/MantineProvider", [
+      await addImportDeclaration(targetAppTsx, "./provider/MantineProvider", [
         "MProvider",
       ]);
-      await wrapJsxElement(targetMainTsx, "App", "MProvider");
+      await wrapJsxElement(targetAppTsx, "h1", "MProvider");
     } else if (uiLibrary === "chakra") {
       s.message("Configuring Chakra UI Library...");
 
-      await addImportDeclaration(targetMainTsx, "./provider/ChakraProvider", [
+      await addImportDeclaration(targetAppTsx, "./provider/ChakraProvider", [
         "CProvider",
       ]);
-      await wrapJsxElement(targetMainTsx, "App", "CProvider");
+      await wrapJsxElement(targetAppTsx, "h1", "CProvider");
     }
     await extendPackageJson(targetPackageJson, PACKAGE_MANIFEST[uiLibrary]);
 
