@@ -38,6 +38,8 @@ export const PACKAGE_MANIFEST: Record<string, DependencyConfig> = {
       "@emotion/react": "^11.11.0",
       "@emotion/styled": "^11.11.0",
       "framer-motion": "^11.0.0",
+      "next-themes": "^0.4.6",
+      "iconsax-reactjs": "^0.0.8",
     },
   },
   mantine: {
