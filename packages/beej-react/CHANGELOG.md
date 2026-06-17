@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.3.0
+
+### Minor Changes
+
+- c458b43: Update: React base template changed with latest vite scaffolded files
+
 ## 0.2.2
 
 ### Patch Changes
