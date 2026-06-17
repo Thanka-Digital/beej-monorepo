@@ -6,7 +6,8 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
