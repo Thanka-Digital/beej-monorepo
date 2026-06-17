@@ -1,6 +1,6 @@
 # Beej
 
-A flexible starter template for React and Next.js with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—customizable to your needs.
+A flexible starter template for JS based web projects with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—extensions to your needs.
 
 > [!Warning]
 >
@@ -10,18 +10,18 @@ A flexible starter template for React and Next.js with pre-configured UI librari
 
 > [!Warning]
 >
-> Required [Node.js](https://nodejs.org/en/) version 18+
+> Required [Node.js](https://nodejs.org/en/) version 22+
 
 **With npm:**
 
 ```bash
-npx @thanka-digital/beej-react@latest
+npx @thanka-digital/beej-cli@latest
 ```
 
 **With pnpm:**
 
 ```bash
-pnpx @thanka-digital/beej-react@latest
+pnpx @thanka-digital/beej-cli@latest
 ```
 
 Now follow the prompts.
@@ -42,7 +42,7 @@ Now follow the prompts.
 
 > [!Note]
 >
-> As stated earlier the package is still in the early stage and there are many features still being worked on. In the meantime you can check the [npm published package](https://www.npmjs.com/package/@thanka-digital/beej-react) and provide us with feedback or issues.
+> As stated earlier the package is still in the early stage and there are many features still being worked on. In the meantime you can check the [npm published package](https://www.npmjs.com/package/@thanka-digital/beej-cli) and provide us with feedback or issues.
 
 ## Contribution
 

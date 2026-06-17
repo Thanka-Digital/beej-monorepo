@@ -38,7 +38,7 @@ To start contributing, follow these steps to set up the project locally.
 
 #### Prerequisites
 
-- Node.js (version 18 or higher)
+- Node.js (version 22 or higher)
 - Git
 
 #### Steps
@@ -46,7 +46,7 @@ To start contributing, follow these steps to set up the project locally.
 1. **Fork the Repository**: Click the **Fork** button on the top right to create your own copy of the repository.
 2. **Clone Your Fork**: Clone the forked repository to your local machine:
    ```bash
-   git clone https://github.com/Thanka-Digital/beej.git
+   git clone https://github.com/Thanka-Digital/beej-monorepo.git
    ```
 3. **Navigate to the Project Directory**:
 
@@ -68,7 +68,7 @@ pnpm dev
 
 > [!Tip]
 >
-> When testing the templates we are currently using the `__tests__` folder which is ignored by git as test folder.
+> When testing the templates we are currently using the `beej-app` folder which is ignored by git as test folder.
 
 ### 3. Making Changes
 
