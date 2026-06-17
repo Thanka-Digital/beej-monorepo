@@ -1,13 +1,13 @@
 {
   "name": "@thanka-digital/beej-react",
-  "version": "0.2.2",
-  "private": true,
+  "version": "0.3.0",
   "description": "React template presets for the beej-cli engine",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

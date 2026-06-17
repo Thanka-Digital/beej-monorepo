@@ -1,8 +1,12 @@
 {
   "name": "@thanka-digital/beej-cli",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "type": "module",
   "main": "./dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "bin": {
     "beej": "./dist/index.js"
   },

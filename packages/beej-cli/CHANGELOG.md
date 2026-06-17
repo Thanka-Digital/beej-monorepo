@@ -1,5 +1,16 @@
 # @thanka-digital/beej-cli
 
+## 0.3.0
+
+### Minor Changes
+
+- c458b43: Update: React base template changed with latest vite scaffolded files
+
+### Patch Changes
+
+- Updated dependencies [c458b43]
+  - @thanka-digital/beej-react@0.3.0
+
 ## 0.2.2
 
 ### Patch Changes

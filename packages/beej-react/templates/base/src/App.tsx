@@ -1,9 +1,9 @@
-import AppRouter from "@/routes/AppRoute";
+import "./App.css";
 
 function App() {
   return (
     <>
-      <AppRouter />
+      <h1>Hello World!</h1>
     </>
   );
 }
