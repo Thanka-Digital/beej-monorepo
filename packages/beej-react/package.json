@@ -1,6 +1,6 @@
 {
   "name": "@thanka-digital/beej-react",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "React template presets for the beej-cli engine",
   "type": "module",
   "main": "./dist/index.js",
