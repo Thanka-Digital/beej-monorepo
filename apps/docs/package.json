@@ -15,14 +15,14 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@thanka-digital/beej-component": "workspace:*",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
-    "@mdx-js/react": "^3.0.0",
+    "@mdx-js/react": "^3.1.0",
     "@tailwindcss/postcss": "^4.0.9",
-    "clsx": "^2.0.0",
-    "postcss": "^8.5.3",
-    "prism-react-renderer": "^2.3.0",
+    "@thanka-digital/beej-component": "workspace:*",
+    "clsx": "^2.1.1",
+    "postcss": "^8.5.15",
+    "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.9"
@@ -31,7 +31,7 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
     "@docusaurus/types": "3.7.0",
-    "typescript": "~5.6.2"
+    "typescript": "~5.6.3"
   },
   "browserslist": {
     "production": [
