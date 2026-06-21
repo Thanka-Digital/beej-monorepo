@@ -17,10 +17,18 @@
     "@changesets/cli": "^2.28.1",
     "prettier": "^3.5.0",
     "turbo": "latest",
-    "typescript": "5.7.3"
+    "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@11.5.2",
+  "packageManager": "pnpm@11.7.0",
   "engines": {
     "node": ">=18"
+  },
+  "overrides": {
+    "tmp@<0.2.6": "^0.2.6",
+    "vite@6.4.1": "^6.4.2",
+    "minimatch@3.1.2": "^3.1.4",
+    "path-to-regexp@0.1.12": "^0.1.13",
+    "serialize-javascript:@6.0.2": "^7.0.3",
+    "weebpack": "5.95.0"
   }
 }

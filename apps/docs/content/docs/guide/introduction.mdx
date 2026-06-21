@@ -1,0 +1,49 @@
+---
+title: What is Beej?
+description: Discover the core architecture and philosophies behind the Beej framework.
+---
+
+import { CheckCircle2 } from "lucide-react";
+
+# Introduction
+
+**Beej** (meaning _seed_ 🌱) is a modular scaffolding toolchain designed for software engineers who want full-stack development flexibility without setup fatigue.
+
+Unlike opinionated meta-frameworks that lock you into specific rendering or styling pipelines, Beej uses an Abstract Syntax Tree (AST) injection engine behind the scenes to seamlessly stitch together your preferred development stack programmatically.
+
+## Core Concept
+
+The core philosophy of Beej is **Extensible Micro-Scaffolding**. Instead of maintaining dozens of separate git repositories for every possible framework mutation (e.g., _NextJS-Tailwind-Zustand_ vs _React-Chakra-Redux_), Beej splits individual technologies into modular compilation bricks:
+
+- **The Core CLI (`@thanka-digital/beej-cli`):** Parses user choices and manages directory structures safely.
+- **The Base Templates:** Lean frameworks definitions containing pristine project environments.
+- **The Extensions Layer:** Configured packages that use automated AST manipulation to inject setup providers (such as wrapping your root application in `JotaiProvider` or `MantineProvider` configurations automatically).
+
+## Primary Features
+
+- **Zero-Config Integrations:** Instant setups for core styling libraries (Tailwind CSS, Chakra UI, Mantine) and state layers (Zustand, Redux, Jotai).
+- **AST-Powered Injection:** Providers are accurately injected into files like `main.tsx` dynamically rather than copy-pasting codeblocks blindly.
+- **Monorepo Compatible:** Fully optimized to map, scale, and build safely inside `pnpm` workspaces.
+- **Built-in Type Trees:** Clean native TypeScript support configured down to root layouts.
+
+## Standard Usage Example
+
+Once built, changing structural logic remains uniform across all frameworks. For instance, selecting **Jotai** and **Mantine** instantly aggregates files down to your source core layout:
+
+```tsx title="src/main.tsx"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import { JotaiProvider } from "./provider/JotaiProvider";
+import { MProvider } from "./provider/MantineProvider";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <JotaiProvider>
+      <MProvider>
+        <App />
+      </MProvider>
+    </JotaiProvider>
+  </React.StrictMode>,
+);
+```

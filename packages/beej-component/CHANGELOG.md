@@ -1,5 +1,12 @@
 # @beej/ui
 
+## 0.0.4
+
+### Patch Changes
+
+- dfde2f8: Package version audit for secuirty mitigation
+- 55e42d0: New documentation site with Fumadocs
+
 ## 0.0.3
 
 ### Patch Changes
