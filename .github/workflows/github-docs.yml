@@ -39,12 +39,12 @@ jobs:
         run: pnpm install
 
       - name: Build Docs
-        run: pnpm build --filter=@thanka-digital/beej-component --filter=@beej/docs
+        run: pnpm build --filter=@thanka-digital/beej-component --filter=docs
 
       - name: Upload artifcats
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/docs/build
+          path: apps/docs/out
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
