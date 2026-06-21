@@ -1,0 +1,97 @@
+---
+title: Getting Started
+description: Set up a fully configured frontend workspace instantly.
+---
+
+# Before Getting Started
+
+Following are some requirements and practices recommended for using `beej-cli`.
+
+### Requirements
+
+- **Node.js**: v18.x or higher (v22+ recommended)
+- **Package Manager**: pnpm is highly recommended for building multi-package apps, but npm or yarn work natively.
+
+# Getting Started
+
+The quickest way to experience the power of the Beej framework is by executing our interactive CLI initializer. The command prompts you to select a base framework, styling configuration, state layer, and networking tool—then instantly scaffolds your workspace.
+
+### Run the CLI Scaffold Tool
+
+Execute the initialization sequence inside your target directory using your preferred package manager:
+
+<CodeBlockTabs defaultValue="pnpm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="pnpm">
+      pnpm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="npm">
+      npm
+    </CodeBlockTabsTrigger>
+
+  </CodeBlockTabsList>
+
+<CodeBlockTab value="npm">
+  ```bash
+  npx @thanka-digital/beej-cli@latest
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="pnpm">
+  ```bash
+  pnpm dlx @thanka-digital/beej-cli@latest
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+### Complete the Interactive Wizard
+
+The CLI will prompt you to pick your application options step-by-step:
+
+1. **Project Name**: Type your project's lowercase directory name.
+2. **Framework**: Select between React (Vite), Next.js, Vue, or Nuxt.
+3. **UI Library**: Pick Tailwind CSS, Chakra UI, or Mantine.
+4. **State Management**: Choose between React Context, Zustand, Jotai, or Redux.
+5. **API Client**: Choose Axios or TanStack Query (React Query).
+
+### Launch the Development Workspace
+
+Navigate into your newly generated directory, install dependencies, and spin up the developer server:
+
+```bash
+cd your-project-name
+```
+
+Installing the dependencies
+
+<CodeBlockTabs defaultValue="pnpm" groupId="package-manager">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="pnpm">
+      pnpm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="npm">
+      npm
+    </CodeBlockTabsTrigger>
+
+  </CodeBlockTabsList>
+
+<CodeBlockTab value="npm">
+```bash
+npm install
+npm run dev
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="pnpm">
+```bash
+pnpm install
+pnpm dev
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+And that is all you need. You are ready to start making amazing projects.

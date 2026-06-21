@@ -8,7 +8,9 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
-import { PropsWithChildren, useRef, useState } from "react";
+import { ComponentType, PropsWithChildren, useRef, useState } from "react";
+
+const FloatingArrowComponent = FloatingArrow as ComponentType<any>;
 
 interface ITooltipProps
   extends Pick<FormComponentVariantProps, "bgColor" | "textColor"> {
@@ -25,7 +27,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
     className = "",
   } = props;
   const [open, setOpen] = useState(false);
-  const arrowRef = useRef(null);
+  const arrowRef = useRef<SVGSVGElement | null>(null);
   const { floatingStyles, refs, context } = useFloating({
     open,
     onOpenChange: setOpen,
@@ -53,7 +55,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
         {open && (
           <div
             ref={refs.setFloating}
-            style={floatingStyles}
+            // style={floatingStyles}
             className={cn(
               "px-2 py-1 text-xs rounded-md w-max",
               bgColor,
@@ -62,7 +64,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
             {...getFloatingProps()}
           >
             {/* TODO: Color for floating arrow */}
-            <FloatingArrow ref={arrowRef} context={context} />
+            <FloatingArrowComponent ref={arrowRef} context={context} />
             {message}
           </div>
         )}
