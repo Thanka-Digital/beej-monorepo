@@ -25,25 +25,25 @@
   "devDependencies": {
     "@beej/eslint-config": "workspace:*",
     "@beej/typescript-config": "workspace:*",
-    "@turbo/gen": "^2.4.0",
-    "@types/node": "^22.13.0",
+    "@turbo/gen": "^2.9.18",
+    "@types/node": "^25.9.3",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "concurrently": "^9.1.2",
-    "eslint": "^9.20.0",
-    "tsup": "^8.4.0",
-    "typescript": "5.7.3"
+    "eslint": "^9.39.4",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "tailwind-merge": "^3.0.2",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.0.0",
     "@floating-ui/react": "^0.27.5",
+    "@tailwindcss/postcss": "^4.0.9",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "postcss": "^8.5.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sonner": "^2.0.1",
-    "@tailwindcss/postcss": "^4.0.9",
-    "postcss": "^8.5.3",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.0.9"
   }
 }
