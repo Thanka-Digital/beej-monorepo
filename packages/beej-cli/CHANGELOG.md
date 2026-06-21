@@ -1,5 +1,13 @@
 # @thanka-digital/beej-cli
 
+## 0.3.1
+
+### Patch Changes
+
+- dfde2f8: Package version audit for secuirty mitigation
+- Updated dependencies [dfde2f8]
+  - @thanka-digital/beej-react@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes
