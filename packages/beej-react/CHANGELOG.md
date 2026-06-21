@@ -1,5 +1,11 @@
 # @beej/react
 
+## 0.3.1
+
+### Patch Changes
+
+- dfde2f8: Package version audit for secuirty mitigation
+
 ## 0.3.0
 
 ### Minor Changes
