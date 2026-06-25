@@ -1,6 +1,6 @@
 {
   "name": "@thanka-digital/beej-component",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/index.js",
   "exports": {
     ".": {
@@ -10,7 +10,8 @@
     "./*": {
       "import": "./dist/*js",
       "require": "./dist/*.cjs"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "dist"

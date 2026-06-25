@@ -12,6 +12,7 @@ export default defineConfig({
     select: "src/components/custom/custom-select.tsx",
     textarea: "src/components/custom/custom-textarea.tsx",
     cn: "src/utils/cn.ts",
+    style: "src/css/global.css",
   },
   format: ["esm", "cjs"],
   dts: true,
@@ -23,4 +24,5 @@ export default defineConfig({
   bundle: true,
   minifyWhitespace: false,
   external: ["react", "react-dom"],
+  injectStyle: false,
 });
