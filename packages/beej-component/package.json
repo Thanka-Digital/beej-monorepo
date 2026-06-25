@@ -10,7 +10,8 @@
     "./*": {
       "import": "./dist/*js",
       "require": "./dist/*.cjs"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "dist"
