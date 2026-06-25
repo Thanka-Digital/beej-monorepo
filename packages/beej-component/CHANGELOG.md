@@ -1,5 +1,11 @@
 # @beej/ui
 
+## 0.0.5
+
+### Patch Changes
+
+- 25cdbfd: Predefined stylesheet to beej-component package
+
 ## 0.0.4
 
 ### Patch Changes
