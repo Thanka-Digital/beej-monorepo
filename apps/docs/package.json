@@ -19,7 +19,8 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^3.6.0",
-    "@takumi-rs/image-response": "^1.8.5"
+    "@takumi-rs/image-response": "^1.8.5",
+    "@thanka-digital/beej-component": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",

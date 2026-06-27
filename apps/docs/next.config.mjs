@@ -13,6 +13,7 @@ const config = {
   assetPrefix: isGithubActions ? `/${repoName}/` : "",
   trailingSlash: true,
   reactStrictMode: true,
+  transpilePackages: ["@thanka-digital/beej-component"],
 };
 
 export default withMDX(config);
