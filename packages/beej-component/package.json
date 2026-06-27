@@ -11,6 +11,11 @@
       "import": "./dist/*js",
       "require": "./dist/*.cjs"
     },
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/plugin.mjs",
+      "require": "./dist/plugin.js"
+    },
     "./dist/style.css": "./dist/style.css"
   },
   "files": [
@@ -21,11 +26,14 @@
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
     "dev": "concurrently \"pnpm build --watch\"",
-    "build": "tsup"
+    "build:code": "tsup",
+    "build:css": "tailwindcss -i ./src/css/global.css -o ./dist/style.css --minify",
+    "build": "pnpm build:code && pnpm build:css"
   },
   "devDependencies": {
     "@beej/eslint-config": "workspace:*",
     "@beej/typescript-config": "workspace:*",
+    "@tailwindcss/cli": "^4.3.1",
     "@turbo/gen": "^2.9.18",
     "@types/node": "^25.9.3",
     "@types/react": "19.0.8",
