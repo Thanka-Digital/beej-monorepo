@@ -1,5 +1,11 @@
 # @beej/ui
 
+## 0.0.6
+
+### Patch Changes
+
+- dd05766: Enhance Tailwind CSS support and update component documentation
+
 ## 0.0.5
 
 ### Patch Changes
