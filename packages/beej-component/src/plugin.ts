@@ -10,27 +10,20 @@ const beejPlugin: TailwindPlugin = plugin(
     theme: {
       extend: {
         colors: {
-          primary: "var(--color-primary, #475199)",
-          "primary-dark": "var(--color-primary-dark, #333D79)",
-          "primary-subtle": "var(--color-primary-subtle, #F1F2F9)",
-          "primary-light": "var(--color-primary-light, #DFE1EC)",
-          "primary-fg": "var(--color-primary-fg, #FFFFFF)",
+          primary: "var(--color-primary, #943ccc)",
+          "primary-dark": "var(--color-primary-dark, #752ba6)",
 
-          secondary: "var(--color-secondary, #E7202C)",
-          "secondary-dark": "var(--color-secondary-dark, #CD1220)",
-          "secondary-subtle": "var(--color-secondary-subtle, #FFE9EB)",
-          "secondary-light": "var(--color-secondary-light, #FFD2D5)",
-          "secondary-fg": "var(--color-secondary-fg, #FFFFFF)",
+          secondary: "var(--color-secondary, #179299)",
+          "secondary-dark": "var(--color-secondary-dark, #106469)",
 
-          "gray-lighter": "var(--color-gray-lighter, #DADADA)",
-          "gray-darker": "var(--color-gray-darker, #9C9B9B)",
+          danger: "var(--color-danger, #d20f39)",
+          "danger-darker": "var(--color-gray-darker, #9f0b2b)",
 
-          accent: "var(--color-accent, #ff3860)",
-          danger: "var(--color-danger, #e3342f)",
           success: "var(--color-success, #38c172)",
-          warning: "var(--color-warning, #f6993f)",
-          info: "var(--color-info, #6cb2eb)",
+          "success-darker": "var(--color-gray-darker, #2c9659)",
+
           neutral: "var(--color-neutral, #3d4451)",
+          "neutral-darker": "var(--color-gray-darker, #252932)",
         },
       },
     },

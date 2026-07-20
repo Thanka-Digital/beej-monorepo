@@ -1,9 +1,13 @@
+import {
+  getAccentColorFromScheme,
+  getOutlineColorFromScheme,
+} from "../../utils/helper";
 import { cn } from "../../utils/cn";
 
 interface ICheckboxProps
   extends Pick<
       FormComponentVariantProps,
-      "accentColor" | "borderColor" | "textColor"
+      "accentColor" | "outlineColor" | "textColor"
     >,
     React.HTMLProps<HTMLInputElement> {
   className?: string;
@@ -18,10 +22,9 @@ export default function Checkbox(props: ICheckboxProps) {
     label,
     id,
     name,
-    textColor,
-    accentColor,
-    // variant,
-    borderColor,
+    textColor = "text-neutral",
+    accentColor = "accent-primary",
+    outlineColor = "outline-primary",
     ...rest
   } = props;
 
@@ -32,8 +35,9 @@ export default function Checkbox(props: ICheckboxProps) {
         type="checkbox"
         name={name}
         className={cn(
-          "rounded-md border p-2 disabled:cursor-not-allowed",
-          borderColor,
+          "rounded-md p-2 disabled:cursor-not-allowed",
+          textColor,
+          outlineColor,
           accentColor,
           className,
         )}
@@ -47,25 +51,24 @@ export default function Checkbox(props: ICheckboxProps) {
 }
 
 interface ICheckboxGroupProps
-  extends Pick<
-    FormComponentVariantProps,
-    "accentColor" | "textColor" | "borderColor"
-  > {
+  extends Pick<FormComponentVariantProps, "textColor">,
+    React.HTMLProps<HTMLInputElement> {
   name: string;
-  checkboxOptions: { label: string; id: string; value: string }[];
+  checkboxOptions: { label: string; id: string; value: string | number }[];
   className?: string;
   flexDirection?: "flex-row" | "flex-col";
+  colorScheme?: ColorScheme;
 }
 
 export function CheckboxGroup(props: ICheckboxGroupProps) {
   const {
     flexDirection = "flex-row",
     className = "",
-    accentColor,
-    textColor,
-    borderColor,
+    colorScheme = "primary",
+    textColor = "text-neutral",
     name,
     checkboxOptions,
+    ...rest
   } = props;
 
   return (
@@ -77,9 +80,10 @@ export function CheckboxGroup(props: ICheckboxGroupProps) {
           id={opt.id}
           name={name}
           value={opt.value}
-          accentColor={accentColor}
-          borderColor={borderColor}
           textColor={textColor}
+          accentColor={getAccentColorFromScheme(colorScheme)}
+          outlineColor={getOutlineColorFromScheme(colorScheme)}
+          {...rest}
         />
       ))}
     </div>

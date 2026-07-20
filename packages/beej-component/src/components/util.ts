@@ -1,9 +1,9 @@
 export const colorSchemeForTextFields = {
-  primary: "text-black outline-primary border-primary",
-  secondary: "text-black outline-secondary border-secondary",
-  success: "text-black outline-success border-success",
-  danger: "text-black outline-danger border-danger",
-  neutral: "text-black outline-neutral border-neutral",
+  primary: "text-black dark:text-white outline-primary border-primary",
+  secondary: "text-black dark:text-white outline-secondary border-secondary",
+  success: "text-black dark:text-white outline-success border-success",
+  danger: "text-black dark:text-white outline-danger border-danger",
+  neutral: "text-black dark:text-white outline-neutral border-neutral",
 };
 
 export const paddingVariantForTextFields = {
@@ -19,11 +19,11 @@ export const variantForTextFields = {
 };
 
 export const colorSchemeForButton = {
-  primary: "outline-primary",
-  secondary: "outline-secondary",
-  success: "outline-success",
-  danger: "outline-danger",
-  neutral: "outline-neutral",
+  primary: "outline-primary dark:outline-primary",
+  secondary: "outline-secondary dark:outline-secondary",
+  success: "outline-success dark:outline-success",
+  danger: "outline-danger dark:outline-danger",
+  neutral: "outline-neutral dark:outline-neutral",
 };
 
 export const paddingVariantForButton = {
