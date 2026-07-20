@@ -9,7 +9,7 @@ import {
 
 const textareaStyles = cva(
   [
-    "w-full disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
+    "w-full outline-offset-3 disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
   ],
   {
     variants: {
@@ -20,7 +20,7 @@ const textareaStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "gray",
+      colorscheme: "neutral",
     },
   },
 );

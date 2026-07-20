@@ -1,13 +1,9 @@
 export const colorSchemeForTextFields = {
-  primary: "text-primary border-primary",
-  secondary: "text-secondary border-secondary",
-  success: "text-success border-success",
-  danger: "text-danger border-danger",
-  warning: "text-warning border-warning",
-  info: "text-info border-info",
-  white: "text-white border-white",
-  black: "text-black border-black",
-  gray: "text-gray border-gray",
+  primary: "text-black dark:text-white outline-primary border-primary",
+  secondary: "text-black dark:text-white outline-secondary border-secondary",
+  success: "text-black dark:text-white outline-success border-success",
+  danger: "text-black dark:text-white outline-danger border-danger",
+  neutral: "text-black dark:text-white outline-neutral border-neutral",
 };
 
 export const paddingVariantForTextFields = {
@@ -18,31 +14,26 @@ export const paddingVariantForTextFields = {
 
 export const variantForTextFields = {
   default: "border rounded-md",
-  underline: "border-b",
-  unstyled: "border-none",
+  underline: "border-b focus:rounded-md",
+  unstyled: "border-none rounded-md",
 };
 
 export const colorSchemeForButton = {
-  primary: "outline-primary",
-  secondary: "outline-secondary",
-  // accent: "outline-accent",
-  success: "outline-success",
-  danger: `outline-danger`,
-  warning: "outline-warning",
-  info: "outline-info",
-  white: "outline-white",
-  black: "outline-black",
-  gray: "outline-gray",
+  primary: "outline-primary dark:outline-primary",
+  secondary: "outline-secondary dark:outline-secondary",
+  success: "outline-success dark:outline-success",
+  danger: "outline-danger dark:outline-danger",
+  neutral: "outline-neutral dark:outline-neutral",
 };
 
 export const paddingVariantForButton = {
   sm: "px-2 py-1 text-sm",
-  base: "px-4 py-2 text-base",
-  lg: "px-6 py-3 text-lg",
+  base: "px-3 py-2 text-base",
+  lg: "px-5 py-3 text-lg",
 };
 
 export const variantForButton = {
   solid: "",
-  outline: "border-2",
+  outline: "border-2 outline-offset-3 bg-transparent",
   ghost: "transition-colors duration-300",
 };

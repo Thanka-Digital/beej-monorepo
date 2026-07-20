@@ -2,12 +2,14 @@ packages:
   - apps/*
   - packages/*
 allowBuilds:
+  '@parcel/watcher': true
   "@swc/core": true
   "@tailwindcss/oxide": true
   core-js: true
   core-js-pure: true
   esbuild: true
   sharp: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - estree-util-value-to-estree@3.3.3
   - '@babel/runtime-corejs3@7.26.10'

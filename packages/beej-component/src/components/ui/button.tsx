@@ -10,7 +10,7 @@ import {
 
 const buttonStyles = cva(
   [
-    "flex gap-2 items-center outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
+    "flex cursor-pointer rounded-md gap-2 items-center outline-offset-2 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-gray-400 disabled:text-gray-800 disabled:border-gray-400 disabled:hover:bg-gray-400 disabled:hover:text-gray-800 disabled:hover:border-gray-400",
   ],
   {
     variants: {
@@ -19,155 +19,91 @@ const buttonStyles = cva(
       colorscheme: colorSchemeForButton,
     },
     compoundVariants: [
+      // SOLID variant combination
       {
         variant: "solid",
         colorscheme: "primary",
-        className: "bg-primary hover:bg-primary-dark text-primary-fg",
+        className: "bg-primary hover:bg-primary-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "secondary",
-        className: "bg-secondary hover:bg-secondary-dark text-secondary-fg",
+        className: "bg-secondary hover:bg-secondary-dark text-white",
       },
-      // {
-      //   variant: "solid",
-      //   colorscheme: "accent",
-      //   className: "bg-accent",
-      // },
       {
         variant: "solid",
         colorscheme: "success",
-        className: "bg-success",
+        className: "bg-success hover:bg-success-dark text-white",
       },
       {
         variant: "solid",
         colorscheme: "danger",
-        className: "bg-danger",
+        className: "bg-danger hover:bg-danger-dark text-white",
       },
       {
         variant: "solid",
-        colorscheme: "warning",
-        className: "bg-warning",
+        colorscheme: "neutral",
+        className: "bg-neutral hover:bg-neutral-dark",
       },
-      {
-        variant: "solid",
-        colorscheme: "info",
-        className: "bg-info",
-      },
-      {
-        variant: "solid",
-        colorscheme: "black",
-        className: "bg-black text-white",
-      },
-      {
-        variant: "solid",
-        colorscheme: "white",
-        className: "bg-white",
-      },
-      {
-        variant: "solid",
-        colorscheme: "gray",
-        className: "bg-gray",
-      },
+
+      // OUTLINE variant combination
       {
         variant: "outline",
         colorscheme: "primary",
-        className: "text-primary border-primary hover:bg-primary-subtle",
+        className:
+          "text-primary border-primary hover:bg-primary/20 dark:hover:bg-primary/40",
       },
       {
         variant: "outline",
         colorscheme: "secondary",
-        className: "text-secondary border-secondary hover:bg-secondary-subtle",
+        className:
+          "text-secondary border-secondary hover:bg-secondary/20 dark:hover:bg-secondary/40",
       },
-      // {
-      //   variant: "outline",
-      //   colorscheme: "accent",
-      //   className: "text-accent border-accent hover:bg-accent/20",
-      // },
       {
         variant: "outline",
         colorscheme: "success",
-        className: "text-success border-success hover:bg-success/20",
+        className:
+          "text-success border-success hover:bg-success/20 dark:hover:bg-success/40",
       },
       {
         variant: "outline",
         colorscheme: "danger",
-        className: "text-danger border-danger hover:bg-danger/20",
+        className:
+          "text-danger border-danger hover:bg-danger/20 dark:hover:bg-danger/40",
       },
       {
         variant: "outline",
-        colorscheme: "warning",
-        className: "text-warning border-warning hover:bg-warning/20",
+        colorscheme: "neutral",
+        className:
+          "text-neutral border-neutral hover:bg-neutral/20 dark:hover:bg-neutral/40",
       },
-      {
-        variant: "outline",
-        colorscheme: "info",
-        className: "text-info border-info hover:bg-info/20",
-      },
-      {
-        variant: "outline",
-        colorscheme: "black",
-        className: "text-black border-black hover:bg-black/80",
-      },
-      {
-        variant: "outline",
-        colorscheme: "white",
-        className: "text-white border-white hover:bg-white/20",
-      },
-      {
-        variant: "outline",
-        colorscheme: "gray",
-        className: "text-gray border-gray hover:bg-gray/20",
-      },
+
+      // GHOSTS variant combination
       {
         variant: "ghost",
         colorscheme: "primary",
-        className: "text-primary bg-transparent hover:bg-primary-light",
+        className: "text-primary hover:bg-primary/20 dark:hover:bg-primary/40",
       },
       {
         variant: "ghost",
         colorscheme: "secondary",
-        className: "text-secondary bg-transparent hover:bg-secondary-light",
+        className:
+          "text-secondary hover:bg-secondary/20 dark:hover:bg-secondary/40",
       },
       {
         variant: "ghost",
-        colorscheme: "warning",
-        className: "text-warning bg-transparent hover:bg-warning/20",
+        colorscheme: "neutral",
+        className: "text-neutral hover:bg-neutral/20 dark:hover:bg-neutral/40",
       },
       {
         variant: "ghost",
         colorscheme: "success",
-        className: "text-success bg-transparent hover:bg-success/20",
+        className: "text-success hover:bg-success/20 dark:hover:bg-success/40",
       },
       {
         variant: "ghost",
         colorscheme: "danger",
-        className: "text-danger bg-transparent hover:bg-danger/20",
-      },
-      // {
-      //   variant: "ghost",
-      //   colorscheme: "accent",
-      //   className: "text-accent bg-transparent hover:bg-accent/20",
-      // },
-      {
-        variant: "ghost",
-        colorscheme: "info",
-        className: "text-info bg-transparent hover:bg-info/20",
-      },
-      {
-        variant: "ghost",
-        colorscheme: "black",
-        className: "text-black bg-transparent hover:bg-black/20",
-      },
-      {
-        variant: "ghost",
-        colorscheme: "white",
-        className: "text-white bg-transparent hover:bg-white/20",
-      },
-      {
-        variant: "ghost",
-        colorscheme: "gray",
-        className: "text-gray bg-transparent hover:bg-gray/20",
+        className: "text-danger hover:bg-danger/20 dark:hover:bg-danger/40",
       },
     ],
     defaultVariants: {
@@ -175,7 +111,7 @@ const buttonStyles = cva(
       colorscheme: "primary",
       padding: "base",
     },
-  }
+  },
 );
 
 interface IButtonProps {
@@ -209,16 +145,17 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         aria-disabled={disabled}
+        role="button"
         disabled={disabled}
         type={type}
         onClick={onClick}
         className={cn(
-          buttonStyles({ variant, colorscheme, padding, className })
+          buttonStyles({ variant, colorscheme, padding, className }),
         )}
         {...rest}
       >
         {processing ? processingText : children}
       </button>
     );
-  }
+  },
 );
