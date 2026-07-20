@@ -10,7 +10,7 @@ import {
 
 const inputStyles = cva(
   [
-    "w-full disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
+    "w-full focus:outline placeholder:text-black/80 dark:placeholder:text-white/60 focus:outline-offset-2 disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
   ],
   {
     variants: {
@@ -21,7 +21,7 @@ const inputStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "gray",
+      colorscheme: "neutral",
     },
   },
 );

@@ -10,7 +10,7 @@ import {
 
 const selectStyles = cva(
   [
-    "w-full disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
+    "w-full outline-offset-3 disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-gray-200",
   ],
   {
     variants: {
@@ -21,7 +21,7 @@ const selectStyles = cva(
     defaultVariants: {
       variant: "default",
       padding: "base",
-      colorscheme: "gray",
+      colorscheme: "neutral",
     },
   },
 );
@@ -69,7 +69,11 @@ export default forwardRef<HTMLSelectElement, SelectProps>(
           {...rest}
         >
           {options.map((opt) => (
-            <option value={opt.value} key={opt.value}>
+            <option
+              className="bg-white text-black dark:bg-black dark:text-white"
+              value={opt.value}
+              key={opt.value}
+            >
               {opt.label}
             </option>
           ))}

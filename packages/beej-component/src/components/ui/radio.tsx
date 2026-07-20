@@ -1,9 +1,13 @@
+import {
+  getAccentColorFromScheme,
+  getOutlineColorFromScheme,
+} from "../../utils/helper";
 import { cn } from "../../utils/cn";
 
 interface IRadioProps
   extends Pick<
       FormComponentVariantProps,
-      "accentColor" | "borderColor" | "textColor"
+      "accentColor" | "outlineColor" | "textColor"
     >,
     React.HTMLProps<HTMLInputElement> {
   className?: string;
@@ -18,10 +22,9 @@ export default function Radio(props: IRadioProps) {
     label,
     id,
     name,
-    textColor,
-    accentColor,
-    // variant,
-    borderColor,
+    textColor = "text-neutral",
+    accentColor = "accent-primary",
+    outlineColor = "outline-primary",
     ...rest
   } = props;
 
@@ -32,8 +35,8 @@ export default function Radio(props: IRadioProps) {
         type="radio"
         name={name}
         className={cn(
-          "rounded-md border p-2 disabled:cursor-not-allowed",
-          borderColor,
+          "disabled:cursor-not-allowed",
+          outlineColor,
           accentColor,
           className,
         )}
@@ -47,25 +50,24 @@ export default function Radio(props: IRadioProps) {
 }
 
 interface IRadioGroupProps
-  extends Pick<
-    FormComponentVariantProps,
-    "accentColor" | "textColor" | "borderColor"
-  > {
+  extends Pick<FormComponentVariantProps, "textColor">,
+    React.HTMLProps<HTMLInputElement> {
   name: string;
-  radioOptions: { label: string; id: string; value: string }[];
+  radioOptions: { label: string; id: string; value: string | number }[];
   className?: string;
   flexDirection?: "flex-row" | "flex-col";
+  colorScheme?: ColorScheme;
 }
 
 export function RadioGroup(props: IRadioGroupProps) {
   const {
     flexDirection = "flex-row",
     className = "",
-    accentColor,
     textColor,
-    borderColor,
+    colorScheme = "primary",
     name,
     radioOptions,
+    ...rest
   } = props;
 
   return (
@@ -77,9 +79,10 @@ export function RadioGroup(props: IRadioGroupProps) {
           id={opt.id}
           name={name}
           value={opt.value}
-          accentColor={accentColor}
-          borderColor={borderColor}
+          accentColor={getAccentColorFromScheme(colorScheme)}
+          outlineColor={getOutlineColorFromScheme(colorScheme)}
           textColor={textColor}
+          {...rest}
         />
       ))}
     </div>
