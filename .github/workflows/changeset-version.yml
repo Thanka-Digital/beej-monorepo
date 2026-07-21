@@ -45,5 +45,3 @@ jobs:
           publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          NPM_CONFIG_PROVENANCE: true
-          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
