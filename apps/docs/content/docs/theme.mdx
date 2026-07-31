@@ -1,0 +1,223 @@
+---
+title: Theming & Customization
+description: Configure central design tokens, semantic palettes, and color schemes across different UI frameworks in Beej.
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Callout type="warn" title="Framework-Specific Customization">
+  Because every UI framework handles design tokens and CSS specificity differently, full theme portability is not 1:1 across libraries. We recommend configuring your core brand palette once inside our central `theme/` directory.
+</Callout>
+
+In **Beej**, we keep theming as lightweight and predictable as possible. Rather than forcing a custom abstraction layer over your favorite library, we provide unified, copy-paste theme configurations tailored to the framework you are using.
+
+Select your target UI library below to view the recommended central configuration pattern:
+
+---
+
+## Central Theme Configurations
+
+<Tabs items={["Tailwind CSS v4", "Chakra UI", "Mantine"]}>
+  <Tab value="Tailwind CSS v4">
+    In modern Tailwind CSS v4, traditional `tailwind.config.js` files are replaced by a **CSS-first configuration**. Beej registers its base semantic design tokens via an `@plugin` import, which you can easily override in your project's root stylesheet using `@theme` variables.
+
+    ```css title="src/global.css"
+    @import "tailwindcss";
+
+    /* 1. Load Beej's default design tokens and component variants */
+    @plugin "@thanka-digital/beej-component/plugin";
+
+    /* 2. Scan component bundles for utility classes */
+    @source "../node_modules/@thanka-digital/beej-component/dist/**/*.mjs";
+
+    /* 3. Override default colors with your custom brand tokens */
+    @theme {
+      --color-primary: #943ccc;
+      --color-primary-dark: #752ba6;
+
+      --color-secondary: #179299;
+      --color-secondary-dark: #106469;
+
+      --color-danger: #d20f39;
+      --color-danger-darker: #9f0b2b;
+
+      --color-success: #38c172;
+      --color-success-darker: #2c9659;
+
+      --color-neutral: #3d4451;
+      --color-neutral-darker: #252932;
+    }
+    ```
+
+    > **Key insight:** Because our plugin variables fallback cleanly (`var(--color-primary, #943ccc)`), redefining `--color-*` variables inside your local `@theme` block automatically re-skins every Beej component across your application.
+
+    For deeper guidance on v4 design tokens, see the [Tailwind CSS Theme Documentation](https://tailwindcss.com/docs/theme).
+  </Tab>
+
+  <Tab value="Chakra UI">
+    For Chakra UI projects, we map your exact brand and feedback color scales directly into Chakra's **Semantic Tokens**. This ensures that components automatically inherit proper solid fills, contrast text, and focus rings.
+
+    ```ts title="src/theme/index.ts"
+    import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
+
+    const customConfig = defineConfig({
+      theme: {
+        tokens: {
+          colors: {
+            brand: {
+              500: { value: "#943ccc" }, // primary
+              700: { value: "#752ba6" }, // primary-dark
+            },
+            secondary: {
+              500: { value: "#179299" }, // secondary
+              700: { value: "#106469" }, // secondary-dark
+            },
+            danger: {
+              500: { value: "#d20f39" }, // danger
+              700: { value: "#9f0b2b" }, // danger-darker
+            },
+            success: {
+              500: { value: "#38c172" }, // success
+              700: { value: "#2c9659" }, // success-darker
+            },
+            neutral: {
+              500: { value: "#3d4451" }, // neutral
+              700: { value: "#252932" }, // neutral-darker
+            },
+          },
+        },
+        semanticTokens: {
+          colors: {
+            primary: {
+              solid: { value: "{colors.brand.500}" },
+              contrast: { value: "{colors.white}" },
+              fg: { value: "{colors.brand.700}" },
+              focusRing: { value: "{colors.brand.500}" },
+            },
+            accent: {
+              solid: { value: "{colors.secondary.500}" },
+              contrast: { value: "{colors.white}" },
+              fg: { value: "{colors.secondary.700}" },
+              focusRing: { value: "{colors.secondary.500}" },
+            },
+            danger: {
+              solid: { value: "{colors.danger.500}" },
+              contrast: { value: "{colors.white}" },
+              fg: { value: "{colors.danger.700}" },
+              focusRing: { value: "{colors.danger.500}" },
+            },
+            success: {
+              solid: { value: "{colors.success.500}" },
+              contrast: { value: "{colors.white}" },
+              fg: { value: "{colors.success.700}" },
+              focusRing: { value: "{colors.success.500}" },
+            },
+          },
+        },
+      },
+    });
+
+    const customExtendedSystem = createSystem(defaultConfig, customConfig);
+    export default customExtendedSystem;
+    ```
+
+    For advanced system configuration, visit the [Chakra UI Theming Overview](https://chakra-ui.com/docs/theming/overview).
+  </Tab>
+
+  <Tab value="Mantine">
+    Mantine uses a 10-shade array structure (indices `0` to `9`) for every registered color scheme. We map the primary hex values to index `6` (default fill) and darker hover states to index `7` across all palette scales.
+
+    ```ts title="src/theme/index.ts"
+    import { createTheme } from "@mantine/core";
+
+    export const customTheme = createTheme({
+      colors: {
+        primary: [
+          "#faf5ff",
+          "#f3e8ff",
+          "#e9d5ff",
+          "#d8b4fe",
+          "#c084fc",
+          "#a855f7",
+          "#943ccc", // 6: primary (#943ccc)
+          "#752ba6", // 7: primary-dark (#752ba6)
+          "#4a1772",
+          "#2f0553",
+        ],
+        secondary: [
+          "#f0fdf4",
+          "#dcfce7",
+          "#bbf7d0",
+          "#86efac",
+          "#4ade80",
+          "#22c55e",
+          "#179299", // 6: secondary (#179299)
+          "#106469", // 7: secondary-dark (#106469)
+          "#14532d",
+          "#052e16",
+        ],
+        danger: [
+          "#fff1f2",
+          "#ffe4e6",
+          "#fecdd3",
+          "#fda4af",
+          "#fb7185",
+          "#f43f5e",
+          "#d20f39", // 6: danger (#d20f39)
+          "#9f0b2b", // 7: danger-darker (#9f0b2b)
+          "#881337",
+          "#4c0519",
+        ],
+        success: [
+          "#f0fdf4",
+          "#dcfce7",
+          "#bbf7d0",
+          "#86efac",
+          "#4ade80",
+          "#22c55e",
+          "#38c172", // 6: success (#38c172)
+          "#2c9659", // 7: success-darker (#2c9659)
+          "#14532d",
+          "#052e16",
+        ],
+        neutral: [
+          "#f8fafc",
+          "#f1f5f9",
+          "#e2e8f0",
+          "#cbd5e1",
+          "#94a3b8",
+          "#64748b",
+          "#3d4451", // 6: neutral (#3d4451)
+          "#252932", // 7: neutral-darker (#252932)
+          "#0f172a",
+          "#020617",
+        ],
+      },
+      primaryColor: "primary",
+      primaryShade: { light: 6, dark: 6 },
+    });
+    ```
+
+    Need to tweak lighter tints for custom backgrounds? Use Mantine's official [Colors Generator Tool](https://mantine.dev/colors-generator/) and see the [Mantine Theme Object Docs](https://mantine.dev/theming/theme-object/) for additional property overrides.
+  </Tab>
+</Tabs>
+
+---
+
+## Semantic Color Mapping
+
+To maintain visual consistency across all libraries and components, Beej maps your exact palette to predictable interaction roles:
+
+| Token Name | Hex Value | Intended Role | Example Application |
+|---|---|---|---|
+| **`primary`** | `#943ccc` | Main brand identity | Solid button backgrounds, active tab underlines |
+| **`primary-dark`** | `#752ba6` | Primary interactive hover | Button hover fills, pressed menu states |
+| **`secondary`** | `#179299` | Secondary accents | Supporting badges, secondary call-to-actions |
+| **`secondary-dark`** | `#106469` | Secondary interactive hover | Hover state for secondary buttons |
+| **`danger`** | `#d20f39` | Destructive actions & errors | Form validation borders, delete button fills |
+| **`danger-darker`** | `#9f0b2b` | Danger interactive hover | Hover fills for destructive confirmations |
+| **`success`** | `#38c172` | Positive feedback | Success toasts, completion checkmarks |
+| **`success-darker`** | `#2c9659` | Success interactive hover | Hover state for positive confirmations |
+| **`neutral`** | `#3d4451` | Default structural elements | Standard borders, subtle card containers |
+| **`neutral-darker`** | `#252932` | Neutral interactive hover | Hover state for neutral buttons and badges |

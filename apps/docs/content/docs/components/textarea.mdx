@@ -1,0 +1,121 @@
+---
+title: Textarea
+description: A responsive, highly customizable text area field component with multi-variant and color scheme support built on Class Variance Authority (CVA).
+---
+
+import { Textarea } from "@thanka-digital/beej-component";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { BaseInteractivePlayground } from "@/app/docs/components/InteractivePlayground";
+
+## Preview
+
+<Textarea label="Comment" colorscheme="" placeholder="Enter your comment" />
+
+## Installation
+
+You can install the component via the CLI or import it directly from the component package.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    ```text
+    When initializing the project with beej it is already initialized
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ```bash
+    pnpm add @thanka-digital/beej-component
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Input } from "@thanka-digital/beej-component";
+
+export default function Example() {
+  return (
+    <Input colorscheme="primary" id="username" label="Username" padding="base" required variant="default"/>
+  );
+}
+```
+
+## Props Reference
+
+Alongside all the in-built input component props we have some extra props that can be used to style the input component.
+
+<TypeTable
+  type={{
+    label: {
+      description: "The text label displayed above the input field.",
+      type: "string",
+      default: '""',
+    },
+    variant: {
+      description: "Controls the structural border and fill style.",
+      type: "'default' | 'underline' | 'unstyled'",
+      default: "'default'",
+    },
+    padding: {
+      description: "Sets the padding and typography scale.",
+      type: "'sm' | 'base' | 'lg'",
+      default: "'base'",
+    },
+    colorscheme: {
+      description: "The color token applied to focus rings and active borders.",
+      type: "'primary' | 'secondary' | 'success' | 'danger' | 'neutral'",
+      default: "'primary'",
+    },
+    required: {
+      description: "Appends a red asterisk (*) to the label and sets HTML required flag.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Interactive Playground
+
+Test different combinations props to see how `<Textarea />` behaves in your project:
+
+<BaseInteractivePlayground
+  component={Textarea}
+  componentName="Textarea"
+  staticProps={{
+    id: "demo-input"
+  }}
+  controls={[
+    {
+      type: "text",
+      name: "label",
+      label: "Label Text",
+      defaultValue: "Comment",
+    },
+    {
+      type: "text",
+      name: "placeholder",
+      label: "Placeholder Text",
+      defaultValue: "Enter the comment",
+    },
+    {
+      type: "select",
+      name: "variant",
+      label: "Variant",
+      options: ["default", "underline", "unstyled"],
+      defaultValue: "default",
+    },
+    {
+      type: "boolean",
+      name: "required",
+      label: "Required mark (*)",
+      defaultValue: false,
+    },
+    {
+      type: "boolean",
+      name: "disabled",
+      label: "Disabled State",
+      defaultValue: false,
+    },
+  ]}
+/>

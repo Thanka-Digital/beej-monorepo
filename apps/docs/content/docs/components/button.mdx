@@ -1,0 +1,93 @@
+---
+title: Button
+description: A highly customizable button component with multi-variant and color scheme support built on Class Variance Authority (CVA).
+---
+
+import { Button } from "@thanka-digital/beej-component";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { BaseInteractivePlayground } from "@/app/docs/components/InteractivePlayground";
+
+## Preview
+
+<Button>Button</Button>
+
+## Installation
+
+You can install the component via the CLI or import it directly from the component package.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    ```text
+    When initializing the project with beej it is already initialized
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ```bash
+    pnpm add @thanka-digital/beej-component
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Button } from "@thanka-digital/beej-component";
+
+export default function Example() {
+  return (
+    <Button colorscheme="primary" padding="base" variant="solid">Example Button</Button>
+  );
+}
+```
+
+## Props Reference
+
+Alongside all the in-built button component props we have some extra props that can be used to style the button component.
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Controls the structural border and fill style.",
+      type: "'solid' | 'outline' | 'ghost'",
+      default: "'solid'",
+    },
+    padding: {
+      description: "Sets the padding and typography scale.",
+      type: "'sm' | 'base' | 'lg'",
+      default: "'base'",
+    },
+    colorscheme: {
+      description: "The color token applied to focus rings and fill and border.",
+      type: "'primary' | 'secondary' | 'success' | 'danger' | 'neutral'",
+      default: "'primary'",
+    },
+  }}
+/>
+
+## Interactive Playground
+
+Test combinations of different props to see how `<Button>` behaves in your project.
+
+<BaseInteractivePlayground
+  component={Button}
+  componentName="Button"
+  staticProps={{
+    children: "Example Button",
+  }}
+  controls={[
+    {
+      type: "select",
+      name: "variant",
+      label: "Variant",
+      options: ["solid", "outline", "ghost"],
+      defaultValue: "solid",
+    },
+    {
+      type: "boolean",
+      name: "disabled",
+      label: "Disabled State",
+      defaultValue: false,
+    },
+  ]}
+/>
