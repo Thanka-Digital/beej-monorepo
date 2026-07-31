@@ -1,6 +1,10 @@
-# Beej
+<div align="center">
+  <img src="apps/docs/app/beej-full.svg" alt="Beej Logo" width="220" />
 
-A flexible starter template for JS based web projects with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—extensions to your needs.
+  # Beej
+
+  A flexible starter template for JS based web projects with pre-configured UI libraries (TailwindCSS, Chakra UI, Mantine), state management (Redux, Jotai), API handling, and more—extensions to your needs.
+</div>
 
 > [!Warning]
 >
